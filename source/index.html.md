@@ -1,239 +1,169 @@
 ---
-title: API Reference
+title: CAQH API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
-
+  - python: Python
+  - java: Java
+  - csharp: C#
 includes:
-  - errors
-
+  - swagger_status_get
+  - swagger_roster_post
+toc_footers: []
 search: true
+headingLevel: 2
 ---
 
-# Introduction
+# CAQH ProView® and DirectAssure® API Introduction (v. 2.1)
+>You will see syntax highlighted code snippets as you read through the documentation.
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the <b>ProView® and DirectAssure® Roster and Status Check API Specifications for Participating Organizations</b>.  This specification document outlines the instructions for Participating Organizations (PO) to access the API service offered in the CAQH ProView profile. This document also serves as reference for the service request parameters, service responses and other information pertinent to the dissemination of provider information through the API. While there are similar parameters and commands to add, update, and delete providers from a ProView or DirectAssure roster, the API URL is different for each roster action.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Anatomy of a REST Call
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+### What Are RESTful Web Services?
 
-# Authentication
+RESTful web services are built to work best on the Web. Representational State Transfer (REST) is an architectural style that specifies constraints, such as the uniform interface, that if applied to a web service induce desirable properties, such as performance, scalability, and modifiability, that enable services to work best on the Web. In the REST architectural style, data and functionality are considered resources and are accessed using Uniform Resource Identifiers (URIs), typically links on the Web. 
 
-> To authorize, use this code:
+The resources are acted upon by using a set of simple, well-defined operations. The REST architectural style constrains an architecture to a client/server architecture and is designed to use a stateless communication protocol, typically HTTPS. In the REST architecture style, clients and servers exchange representations of resources by using a standardized interface and protocol.
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+### Headers
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+>Creating Headers Object
 
 ```python
-import kittn
+#Set up your header object as a simple python 
+#dictionary to be passed into the request call
+headers = {
+  "Content-Type": 'application/json'
+}
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+#In python we pass our authorization credentials 
+#directly into the request, so for now they can
+#be set up as string variables
+username = "yourUsername"
+password = "yourPassword"
 ```
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+A REST call will need to include headers to communicate meta-information about the call itself.  In the headers to the CAQH API, you will be passing in the content type of the message body (JSON) and your authorization.  See in the sidebar for how to best set up your headers in your language.
 
-```javascript
-const kittn = require('kittn');
+CAQH uses a standard form of authorization where your credentials are sent in the form of
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
+`Basic username:password` 
 
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
+base 64 encoded.
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+There are two ways to pass in endpoint-specific data to an API.  The first way is passing parameters attached to the URL itself.  This is in the form of appending parameters onto the end of the URL, for example if you were trying to call the following endpoint 
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+>Creating Query Parameter Object
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+#Set up your query parameters object as a simple 
+#python dictionary to be passed into the request call
+params = {
+  "parameter1": "value",
+  "parameter2": 0
 }
 ```
 
-This endpoint retrieves a specific kitten.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+```csharp
+var parameters = new Dictionary<string,string>()
+	{
+		{ "parameter1", "value"},
+		{ "parameter2", "0"}
+	};
+	
+var encodedContent = new FormUrlEncodedContent(params);
+	
 ```
+
+`https://URL.url/api/endpoint` 
+
+with the query parameters `parameter1` and `parameter2`, you would format the URL as follows:
+
+`https://URL.url/api/endpoint?Parameter=value&parameter2=0`
+
+Notice how the query parameters begin after `/endpoint` with a `?` and are separated by an `&`.  You will likely not have to format the URL yourself as your language will have a way to pass in a parameter object and automatically format the URL with them.  See the code samples on the right for how this is best accomplished in your language of choice.
+
+### Request Body
+
+>Creating Request Body Object
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
+#Set up your request body object as a simple 
+#python dictionary to be passed into the request call
+data = {
+	"field1": "string",
+	"field2": 0
 }
 ```
 
-This endpoint deletes a specific kitten.
+```csharp
 
-### HTTP Request
+var data = new
+	{
+		field1 = "string",
+		field2 = 0
+	};
 
-`DELETE http://example.com/kittens/<ID>`
+```
 
-### URL Parameters
+The second way that information can be sent across is in the form of a body object attached to a `POST` call or `PUT` call.  The CAQH API will accept JSON objects in the body of POST calls.  You will be able to find the proper object in the documentation for the endpoint.  Not all fields on the body object will be required, so pay attention to the minimum required fields and their format.  The request body will always be JSON, however you may receive XML responses from the API, so pay attention to the documentation and what format the response is in.  
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+In the code snippet we've put together a body object with the following fields:
 
+| Field Name | Type | Value|
+|---|---|---|
+| field1 | string | "string" |
+| field2 | integer | 0 |
+
+### Sending the request
+
+>Sending the Full Request
+
+```python
+#The requests library contains very easy to use
+#HTTP methods.  Use the command "pip install requests"
+#in your command prompt to install the requests library.
+from requests import get, post, put, delete
+
+headers = {
+  "Content-Type": 'application/json'
+}
+
+params = {
+  "parameter": "value",
+  "parameter2": 0
+}
+
+data = {
+	"field1": "string",
+	"field2": 0
+}
+
+#A single URL can be set up to accept all HTTP methods
+URL = "https://URL.url/api/endpoint"
+username = "username"
+password = "password"
+
+responseGet = get(URL, params = params, auth = (username, password))
+responsePost = post(URL, params = params, data = data, auth = (username, password))
+responsePut = put(URL, params = params, data = data, auth = (username, password))
+responseDelete = delete(URL, params = params, auth = (username, password))
+```
+
+An HTTP REST call sent to an API should use one of the following HTTP methods:
+
+| Method | Usage |
+|----|----|
+| GET | This method is used for read-only operations.  A `GET` method may pass in query parameters, but will not have a request body.  No data will be inserted, updated or deleted as a result of a get call |
+| POST | This method is used to send new information to the API.  A `POST` call will contain a body which is meant to be inserted into the API's data store.  |
+| PUT | This method is used to update information in the API.  A `PUT` call will send information to the API that should be used to alter or update an existing record. |
+| DELETE | This method is used to delete a record in the API.  A `DELETE` call will send a unique identifier for a record which is to be deleted. |
+
+Each of these methods can be used to invoke a different functionality on the same endpoint.  A REST endpoint will normally represent an object that can be queried, inserted, updated or deleted.  In many cases in the CAQH API you will receive a batchId in response as the processes take longer than a single REST call will normally allow.  You will have to use these batchId's in other endpoints using a GET to retrieve the status of your request.
+
+<aside> REST is <code>stateless</code> meaning that <b>nothing</b> is maintained from call to call.  The relevant data and authorization must be explicitly input into every call.</aside>
