@@ -16,7 +16,15 @@ headingLevel: 2
 # CAQH ProView® and DirectAssure® API Introduction (v. 2.1)
 >You will see syntax highlighted code snippets as you read through the documentation.
 
+>Please switch to the language you're most comfortable with in the tabs above.
+
 Welcome to the <b>ProView® and DirectAssure® Roster and Status Check API Specifications for Participating Organizations</b>.  This specification document outlines the instructions for Participating Organizations (PO) to access the API service offered in the CAQH ProView profile. This document also serves as reference for the service request parameters, service responses and other information pertinent to the dissemination of provider information through the API. While there are similar parameters and commands to add, update, and delete providers from a ProView or DirectAssure roster, the API URL is different for each roster action.
+
+## CAQH API Process Flow
+
+Interacting with the CAQH API will often require several REST calls to be made in sequence.  You will receive a `batch-id` in the response to any request to add, update or delete data.  This allows you to continue performing other operations and check in later if the CAQH process is taking a long time.  Each section in this documentation will have a `Next Steps` section that will link you to the calls you may want to make next.  Please consult the following diagram to get an idea of what calls are commonly linked together:
+
+[Image]
 
 # Anatomy of a REST Call
 
@@ -167,3 +175,5 @@ An HTTP REST call sent to an API should use one of the following HTTP methods:
 Each of these methods can be used to invoke a different functionality on the same endpoint.  A REST endpoint will normally represent an object that can be queried, inserted, updated or deleted.  In many cases in the CAQH API you will receive a batchId in response as the processes take longer than a single REST call will normally allow.  You will have to use these batchId's in other endpoints using a GET to retrieve the status of your request.
 
 <aside> REST is <code>stateless</code> meaning that <b>nothing</b> is maintained from call to call.  The relevant data and authorization must be explicitly input into every call.</aside>
+
+#ProView®

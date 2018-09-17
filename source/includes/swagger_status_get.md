@@ -1,6 +1,6 @@
-# Status Check Request <b>[GET]</b>
+<h1 id="CAQH-ProView-StatusGet-CAQH-ProView-StatusGet">- Status Check Request [GET]</h1>
 
-## Getting Started
+<h2 id="CAQH-ProView-StatusGet-getting-started">Getting Started</h2>
 
 The ProView Status Check API web service can be used by Participating Organizations to view the status of providers in CAQH ProView. Before requesting ProView Status Check API access, POs should have a business case and an existing application with which to consume and use the web service. The ProView Status Check API accepts one provider at a time.
 To sign-up for the ProView Status Check API service and get authorization, please contact CAQH ProView Support.
@@ -9,16 +9,24 @@ Method | Values
 --------- | ------- 
 GET | https://proview.caqh.org/RosterAPI/api/providerstatus
 
-## GET /ProviderStatus
+## Staging The Data
+
 >Create parameters object
 
 ```python
+
 caqh_provider_id = 12345678
 organization_id = 1234
+product = 'PV'
 
-params = { 'Product': 'PV',  'Caqh_Provider_Id': caqh_provider_id,  'Organization_id': organization_id }
+params = { 'Product': product,  'Caqh_Provider_Id': caqh_provider_id,  'Organization_id': organization_id }
 
 ```
+
+The status endpoint will take the Product of `PV`, CAQH Provider Id and the Organization Id that can both be found in the CAQH portal.  These should be passed in to the [parameters](#query-parameters) of the request.  The Status endpoint only accepts `GET` requests which will not contain a request body.
+
+## GET /ProviderStatus
+
 A PO can request the status of a provider by submitting a call to the following URL. 
 
 Parameter | Format | Max Size | Values | Status Check
@@ -43,8 +51,9 @@ from requests import get
 
 caqh_provider_id = 12345678
 organization_id = 1234
+product = 'PV'
 
-params = { 'Product': 'PV',  'Caqh_Provider_Id': caqh_provider_id,  'Organization_id': organization_id}
+params = { 'Product': product,  'Caqh_Provider_Id': caqh_provider_id,  'Organization_id': organization_id }
 
 username = 'username'
 password = 'password'
@@ -116,7 +125,7 @@ using(HttpClient client = new HttpClient())
 
 `GET /ProviderStatus`
 
-the `get(` call is doing a lot for us here, so let's break it down.  The first parameter `requestURL` is the <b>Base URL</b> of the API you are trying to hit.  The next parameter: `params = params` is setting the parameters of the API call itself.  For this example it will format the URL to be `https://proview-demo.caqh.org/RosterAPI/api/providerstatus?Product=PV&Caqh_Provider_Id=12345678&Organization_id=1234`.  There should be no parameters already set in the base URL.  Finally the `auth` parameter takes in the tuple `(username, password)`.  The requests get function supports basic base 64 encoding by default, which is what is used by CAQH and will automatically be set in the header.  If you have properly filled in your credentials and IDs, you should receive a response as follows:
+the `get` call is doing a lot for us here, so let's break it down.  The first parameter `requestURL` is the <b>Base URL</b> of the API you are trying to hit.  The next parameter: `params = params` is setting the parameters of the API call itself.  For this example it will format the URL to be `https://proview-demo.caqh.org/RosterAPI/api/providerstatus?Product=PV&Caqh_Provider_Id=12345678&Organization_id=1234`.  There should be no parameters already set in the base URL.  Finally the `auth` parameter takes in the tuple `(username, password)`.  The requests get function supports basic base 64 encoding by default, which is what is used by CAQH and will automatically be set in the header.  If you have properly filled in your credentials and IDs, you should receive a response as follows:
 
 > Example responses
 
@@ -159,3 +168,5 @@ Status Code **200**
 | Provider_Status_Date|string(date)|false|none|Date provider reached the CAQH Provider Status (Format: YYYYMMDD)|
 | Provider_Practice_State|string|false|none|This is the primary practice state of the provider.|
 | Provider_Found_Flag|string|false|none|A flag that denotes if the provider is found in the system. Valid values are 'Y' and 'N'|
+
+## Next Steps
