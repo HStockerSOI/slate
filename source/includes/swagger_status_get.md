@@ -127,6 +127,8 @@ using(HttpClient client = new HttpClient())
 
 the `get` call is doing a lot for us here, so let's break it down.  The first parameter `requestURL` is the <b>Base URL</b> of the API you are trying to hit.  The next parameter: `params = params` is setting the parameters of the API call itself.  For this example it will format the URL to be `https://proview-demo.caqh.org/RosterAPI/api/providerstatus?Product=PV&Caqh_Provider_Id=12345678&Organization_id=1234`.  There should be no parameters already set in the base URL.  Finally the `auth` parameter takes in the tuple `(username, password)`.  The requests get function supports basic base 64 encoding by default, which is what is used by CAQH and will automatically be set in the header.  If you have properly filled in your credentials and IDs, you should receive a response as follows:
 
+<h2 id="get-providerstatus-responses">Responses</h2>
+
 > Example responses
 
 > 200 Response
@@ -144,8 +146,6 @@ the `get` call is doing a lot for us here, so let's break it down.  The first pa
 	'provider_found_flag': 'Y'
 }
 ```
-
-<h3 id="get-providerstatus-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|

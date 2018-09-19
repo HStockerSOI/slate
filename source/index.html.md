@@ -24,7 +24,58 @@ Welcome to the <b>ProView® and DirectAssure® Roster and Status Check API Speci
 
 Interacting with the CAQH API will often require several REST calls to be made in sequence.  You will receive a `batch-id` in the response to any request to add, update or delete data.  This allows you to continue performing other operations and check in later if the CAQH process is taking a long time.  Each section in this documentation will have a `Next Steps` section that will link you to the calls you may want to make next.  Please consult the following diagram to get an idea of what calls are commonly linked together:
 
-[Image]
+<img id="myImg" src="images/HealthPlan workflow with CAQH APIs.png" style="width:100%;max-width:300px">
+
+<!-- The Modal -->
+<div id="myimgModel" class="imgModel">
+
+  <!-- The Close Button -->
+  <span class="close">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="imgModel-content" id="img01">
+</div>
+
+# Requirements
+
+Make sure you have downloaded the most up-to-date SDK (Software Development Kit) and an IDE (Integrated Development Environment) for your language of choice.  You should be familiar with the syntax and have a basic knowledge of your language and how software normally communicates with APIs (Application Programming Interface).  If you have no experience with any of the languages, we suggest you familiarize yourself with the basics and then return to this documentation.
+
+# Loading and Parsing Data
+
+```python
+import pyodbc 
+
+#pass your connection string into the "connect" function
+cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
+                      "Server=server_name;"
+                      "Database=db_name;"
+                      "Trusted_Connection=yes;")
+
+
+cursor = cnxn.cursor()
+cursor.execute('SELECT * FROM DirectoryRosterFile')
+
+data = []
+
+for row in cursor:
+    roster = {}
+	
+	roster["provider"] = row.provider
+	roster["organization_id"] = row.organization_id
+	roster["application_type"] = row.application_type
+	#continue for all other applicable fields
+	
+	#add the roster object to the data array
+	data.append(roster)
+```
+
+In this code snippet we are querying data from a database and composing an object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
+
+You may choose to separate your data into multiple tables in your database, so update your query to reflect the necessary joins to retrieve all the relevant data.  In this case we have simplified the example so all the data is stored in a single table.  The SQL language we are using here is specific to SQL Server (Transact-SQL), so make sure you're aware of what SQL language your database uses and update it accordingly.
+
+This data will be passed into your REST calls in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
+
+<aside>Use the command <code>pip install pyodbc</code> to install the <code>pyodbc</code> library necessary for this snippet.</aside>
 
 # Anatomy of a REST Call
 

@@ -1,0 +1,73 @@
+/* Style the Image Used to Trigger the imgModel */
+#myImg {
+	all:unset !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    transition: 0.3s !important;
+}
+
+#myImg:hover {opacity: 0.7 !important;}
+
+/* The imgModel (background) */
+.imgModel {
+	all:unset !important;
+    display: none !important; /* Hidden by default */
+    position: fixed !important; /* Stay in place */
+    z-index: 1 !important; /* Sit on top */
+    padding-top: 100px !important; /* Location of the box */
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important; /* Full width */
+    height: 100% !important; /* Full height */
+    overflow: auto !important; /* Enable scroll if needed */
+    background-color: rgb(0,0,0) !important; /* Fallback color */
+    background-color: rgba(0,0,0,0.9) !important; /* Black w/ opacity */
+}
+
+/* imgModel Content (Image) */
+.imgModel-content {
+	all:unset !important;
+    margin: auto !important;
+    display: block !important;
+    width: 80% !important;
+    max-width: 700px !important;
+}
+/* Add Animation - Zoom in the imgModel */
+.imgModel-content, #caption { 
+	all:unset !important;
+    animation-name: zoom !important;
+    animation-duration: 0.6s !important;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+	all:unset !important;
+    position: absolute !important;
+    display: none !important; /* Hidden by default */
+    top: 15px !important;
+    right: 35px !important;
+    color: #f1f1f1 !important;
+    font-size: 40px !important;
+    font-weight: bold !important;
+    transition: 0.3s !important;
+}
+
+.close:hover,
+.close:focus {
+	all:unset !important;
+    color: #bbb !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .imgModel-content {
+        width: 100%;
+    }
+}

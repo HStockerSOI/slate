@@ -18,6 +18,11 @@ A PO can add one or more providers to the roster by submitting a call to the fol
 |POST | https://proview-demo.caqh.org/RosterAPI/api/Roster |
 
 <h2 id="CAQH-ProView-RosterAPI-Roster-staging-data">Staging The Data</h2>
+
+> Create parameters object
+
+  If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
+
 ```python
 product = 'PV'
 
@@ -39,7 +44,7 @@ The body of the Roster Add endpoint can take one or more [provider add](#tocSadd
 
 <h2 id="CAQH-ProView-RosterAPI-Roster-making-request">Making The Request</h2>
 
-> Code samples
+> Full API Request
 
 ```python
 from requests import post
@@ -57,41 +62,41 @@ params = {
 data = [
   {
     "provider": {
-      "first_name": "string",
-      "middle_name": "string",
-      "last_name": "string",
-      "name_suffix": "string",
-      "gender": "string",
-      "address1": "string",
-      "address2": "string",
-      "city": "string",
-      "state": "string",
-      "zip": "string",
-      "zip_extn": "string",
-      "phone": "string",
-      "fax": "string",
-      "email": "string",
-      "practice_state": "string",
-      "birthdate": "2018-09-17",
-      "ssn": "string",
-      "short_ssn": "string",
-      "dea": "string",
-      "upin": "string",
-      "type": "string",
-      "tax_id": 0,
-      "npi": 0,
-      "license_state": "string",
-      "license_number": 0
+      "first_name": "Required",
+      "middle_name": "Optional",
+      "last_name": "Required",
+      "name_suffix": "Optional",
+      "gender": "Required (M/F)",
+      "address1": "Required",
+      "address2": "Optional",
+      "city": "Required",
+      "state": "Required",
+      "zip": "Required",
+      "zip_extn": "Optional",
+      "phone": "Optional",
+      "fax": "Optional",
+      "email": "Optional",
+      "practice_state": "Required",
+      "birthdate": "Required (YYYYMMDD)",
+      "ssn": "One required*",
+      "short_ssn": "Optional",
+      "dea": "One required*",
+      "upin": "One required*",
+      "type": "Required",
+      "tax_id": "Optional",
+      "npi": "One required*",
+      "license_state": "Required if license_number",
+      "license_number": "One required*"
     },
-    "caqh_provider_id": "string",
-    "po_provider_id": "string",
-    "last_recredential_date": "string",
-    "next_recredential_date": "string",
-    "delegation_flag": "string",
-    "application_type": "string",
-    "affiliation_flag": "string",
-    "organization_id": "string",
-    "region_id": null
+    "caqh_provider_id": "Required",
+    "po_provider_id": "Optional",
+    "last_recredential_date": "Optional (YYYYMMDD)",
+    "next_recredential_date": "Optional (YYYYMMDD)",
+    "delegation_flag": "Optional",
+    "application_type": "Conditional - see description",
+    "affiliation_flag": "Optional",
+    "organization_id": "Required",
+    "region_id": "Optional"
   }
 ]
 
@@ -176,25 +181,48 @@ using(HttpClient client = new HttpClient())
 |---|---|
 |product|PV|
 
+<h2 id="CAQH-ProView-RosterAPI-Roster-responses">Responses</h2>
+
 > Example responses
 
-> 200 Response
+>200 Response
 
-<h3 id="roster-post-add-responses">Responses</h3>
+```json
+{
+	'batch_id':'string'
+}
+```
+
+>400 and 401 Response
+
+```json
+{
+	'Message':'error'
+}
+```
+
+If your request has been formatted correctly, it will return a batch id and a 200 response code.  If not, the response object will have a "Message" field that will contain the error.  Once you get a 200 response, you will want to save the batch id for use in the [roster operation result](#todo) call.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The Add to Roster Web Service immediately returns a Response JSON that includes a system-generated unique Batch ID for the request.|[AddResponse](#schemaaddresponse)|
-
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-Authorization
-</aside>
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|If there was an error with the request, a 400 status code will be returned with an object that contains the field "Message" with the error.  Please check to make sure your JSON request body is properly formatted.|[AddErrorResponse](#schemaadderrorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|If your credentials are incorrect or not authorized to access this endpoint, it will return a 401 status code representing an unauthorized response.  Please double check your credentials and the URL to make sure you're calling the correct environment.|[AddErrorResponse](#schemaadderrorresponse)|
 
 <h2 id="CAQH-ProView-RosterAPI-Roster-next-step">Next Steps</h2>
 
+> Parsing the response
+
 ```python
-product = response[product]
+
+if(response.status_Code == 200):
+	batch_id = response.json()["batch_id"]
+
+if(response.status_Code == 400):
+	Message = response.json()["Message"]
+
+if(response.status_Code == 401):
+	Message = response.json()["Message"]
 
 ```
 
@@ -214,31 +242,31 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 
 ```json
 {
-  "first_name": "string",
-  "middle_name": "string",
-  "last_name": "string",
-  "name_suffix": "string",
-  "gender": "string",
-  "address1": "string",
-  "address2": "string",
-  "city": "string",
-  "state": "string",
-  "zip": "string",
-  "zip_extn": "string",
-  "phone": "string",
-  "fax": "string",
-  "email": "string",
-  "practice_state": "string",
-  "birthdate": "2018-09-17",
-  "ssn": "string",
-  "short_ssn": "string",
-  "dea": "string",
-  "upin": "string",
-  "type": "string",
-  "tax_id": 0,
-  "npi": 0,
-  "license_state": "string",
-  "license_number": 0
+  "first_name": "Required",
+  "middle_name": "Optional",
+  "last_name": "Required",
+  "name_suffix": "Optional",
+  "gender": "Required (M/F)",
+  "address1": "Required",
+  "address2": "Optional",
+  "city": "Required",
+  "state": "Required",
+  "zip": "Required",
+  "zip_extn": "Optional",
+  "phone": "Optional",
+  "fax": "Optional",
+  "email": "Optional",
+  "practice_state": "Required",
+  "birthdate": "Required (YYYYMMDD)",
+  "ssn": "One required*",
+  "short_ssn": "Optional",
+  "dea": "One required*",
+  "upin": "One required*",
+  "type": "Required",
+  "tax_id": "Optional",
+  "npi": "One required*",
+  "license_state": "Required if license_number",
+  "license_number": "One required*"
 }
 
 ```
@@ -262,14 +290,14 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |fax|string|false|A field that denotes a provider’s fax number for correspondence.|
 |email|string|false|The primary email address used for correspondence with the provider and for provider outreach.|
 |practice_state|string|true|The two-character ANSI state code that corresponds to the provider’s primary practice state. Note: This helps ProView identify state mandated requirements (if any) for the provider.|
-|birthdate|string(date)|true|This field denotes the provider’s date of birth. (Format:  YYYYMMDD)|
+|birthdate|string|true|This field denotes the provider’s date of birth. (Format:  YYYYMMDD)|
 |ssn|string|false|This field denotes the provider’s Social Security Number (Must be 9 digits).|
 |short_ssn|string|false|This field denotes last two Characters of the provider’s SSN. This is required for Illinois providers if all of the following are true: -	Primary Practice State = ‘IL’ -	Provider_SSN is null  Application_Type=’2’ for re-credentialing.|
 |dea|string|false|This field denotes the provider’s Drug Enforcement Administration (DEA) Number (Format must be ‘AA9999999’)|
 |upin|string|false|This field denotes the provider’s Unique Physician Identification Number (UPIN) (Format must be ‘A99999’)|
 |type|string|true|This field denotes the provider type code based on a list of Standard or Allied provider type codes from ProView. Note: The value must be from the list of standard ProView Provider Type codes. See Appendix below for a list of valid values.|
-|tax_id|integer(int32)|false|This field denotes the Federal Tax ID number of the provider.|
-|npi|integer(int32)|true|The field denotes the provider’s Type 1 (Individual) NPI number.  (Format: 9 numeric digits followed by one numeric check digit; must be 10 digits)|
+|tax_id|string|false|This field denotes the Federal Tax ID number of the provider.|
+|npi|string|true|The field denotes the provider’s Type 1 (Individual) NPI number.  (Format: 9 numeric digits followed by one numeric check digit; must be 10 digits)|
 |license_state|string|false|The two-Character ANSI state code that corresponds to the provider’s license state This field is required if Provider License Number is populated.|
 |license_number|integer(int32)|false|This field denotes the provider’s State License Number. The field is required if Provider License State is populated.|
 
@@ -281,41 +309,41 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 [
   {
     "provider": {
-      "first_name": "string",
-      "middle_name": "string",
-      "last_name": "string",
-      "name_suffix": "string",
-      "gender": "string",
-      "address1": "string",
-      "address2": "string",
-      "city": "string",
-      "state": "string",
-      "zip": "string",
-      "zip_extn": "string",
-      "phone": "string",
-      "fax": "string",
-      "email": "string",
-      "practice_state": "string",
-      "birthdate": "2018-09-17",
-      "ssn": "string",
-      "short_ssn": "string",
-      "dea": "string",
-      "upin": "string",
-      "type": "string",
-      "tax_id": 0,
-      "npi": 0,
-      "license_state": "string",
-      "license_number": 0
+      "first_name": "Required",
+      "middle_name": "Optional",
+      "last_name": "Required",
+      "name_suffix": "Optional",
+      "gender": "Required (M/F)",
+      "address1": "Required",
+      "address2": "Optional",
+      "city": "Required",
+      "state": "Required",
+      "zip": "Required",
+      "zip_extn": "Optional",
+      "phone": "Optional",
+      "fax": "Optional",
+      "email": "Optional",
+      "practice_state": "Required",
+      "birthdate": "Required (YYYYMMDD)",
+      "ssn": "One required*",
+      "short_ssn": "Optional",
+      "dea": "One required*",
+      "upin": "One required*",
+      "type": "Required",
+      "tax_id": "Optional",
+      "npi": "One required*",
+      "license_state": "Required if license_number",
+      "license_number": "One required*"
     },
-    "caqh_provider_id": "string",
-    "po_provider_id": "string",
-    "last_recredential_date": "string",
-    "next_recredential_date": "string",
-    "delegation_flag": "string",
-    "application_type": "string",
-    "affiliation_flag": "string",
-    "organization_id": "string",
-    "region_id": null
+    "caqh_provider_id": "Required",
+    "po_provider_id": "Optional",
+    "last_recredential_date": "Optional (YYYYMMDD)",
+    "next_recredential_date": "Optional (YYYYMMDD)",
+    "delegation_flag": "Optional",
+    "application_type": "Conditional - see description",
+    "affiliation_flag": "Optional",
+    "organization_id": "Required",
+    "region_id": "Optional"
   }
 ]
 
@@ -334,7 +362,7 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |application_type|string|false|none|
 |affiliation_flag|string|false|none|
 |organization_id|string|false|none|
-|region_id|any|false|none|
+|region_id|string|false|none|
 
 <h2 id="tocSaddresponse">AddResponse</h2>
 
@@ -352,4 +380,21 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |Name|Type|Required|Description|
 |---|--|--|-----|
 |batch_id|string|false|none|
+
+<h2 id="tocSadderrorresponse">AddErrorResponse</h2>
+
+<a id="schemaadderrorresponse"></a>
+
+```json
+{
+  "Message": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|Message|string|false|none|
 

@@ -41,6 +41,7 @@ under the License.
     <% else %>
       <%= javascript_include_tag  "all_nosearch" %>
     <% end %>
+    <%= stylesheet_link_tag :image, media: :image %>
   </head>
 
   <body class="<%= page_classes %>" data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
@@ -113,4 +114,5 @@ under the License.
       </div>
     </div>
   </body>
+  <%= javascript_include_tag  "image" %>
 </html>
