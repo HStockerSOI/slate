@@ -1,5 +1,185 @@
 
 
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Get Roster Result [GET]</h1>
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-getting-started">Getting Started</h2>
+
+```python
+from requests import get
+from json import dumps
+
+url = "https://proview-demo.caqh.org/RosterAPI/api/Roster"
+```
+
+A PO can request the status and results of a previous Add to Roster, Update on Roster, or Delete from Roster request by submitting the system-generated Batch ID in the following URL.
+
+| Method | URL |
+|---|---|
+|GET | https://proview-demo.caqh.org/RosterAPI/api/Roster |
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-staging-data">Staging The Data</h2>
+
+> Create parameters object
+
+  If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
+
+```python
+batch_id = 'string'
+
+params = {
+  "batch_id": batch_id
+}
+```
+<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-parameter">Parameters</h3>
+
+  The batch id from a previous create, update or delete request.  The data should be passed in to the [parameters](#query-parameters) of the request.
+
+<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-body">Body</h3>
+
+    The data should be passed in to the [request body](#request-body) of the request.
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-api-definition"> GET /Roster</h2>
+
+The Roster Operation Result will take a `batch_id` in its parameters.  This batch id will have been returned to you by a successful `POST`, `PUT` or `DELETE`.  A `GET` call cannot have a request body.
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-making-request">Making The Request</h2>
+
+> Full API Request
+
+```python
+from requests import get
+from json import dumps
+
+headers = {
+  "Accept": '*/*'
+}
+
+params = {
+  "batch_id": 'string'
+}
+
+username = "yourUsername"
+password = "yourPassword"
+
+response = get("https://proview-demo.caqh.org/RosterAPI/api/Roster", params = params, headers = headers, auth = (username, password))
+
+print(response.json())
+
+```
+
+```java
+URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster?batch_id=string");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```csharp
+using(HttpClient client = new HttpClient())
+{
+	// Add an Accept header for JSON format.
+	client.DefaultRequestHeaders.Accept.Add(
+	new MediaTypeWithQualityHeaderValue("application/json"));
+	
+	Dictionary<string, string> parameters = new Dictionary<string,string>()
+	{
+	    {"batch_id", "string"}
+	}
+	var encodedContent = new FormUrlEncodedContent(parameters);
+
+	// List data response.
+	HttpResponseMessage response = client.GetAsync("https://proview-demo.caqh.org/RosterAPI/api/Roster", encodedContent).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+	if (response.IsSuccessStatusCode)
+	{
+		// Parse the response body.
+		var dataObjects = response.Content.ReadAsAsync<IEnumerable<DataObject>>().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
+		foreach (var d in dataObjects)
+		{
+			Console.WriteLine("{0}", d.Name);
+		}
+	}
+	else
+	{
+		Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+	}
+
+	//Make any other calls using HttpClient here.
+
+	//HttpClient will automatically be disposed of at the conclusion of the using block
+}
+```
+
+`GET /Roster`
+
+<h3 id="get__roster-parameters">Parameters</h3>
+
+|Parameter|Type|Required|Description|
+|---|---|---|---|
+|batch_id|query|string|true|The batch id from a previous create, update or delete request.|
+
+<h3 id="get__roster-body">Body</h3>
+
+|Parameter|Type|Required|Description|
+|---|---|---|---|
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-responses">Responses</h2>
+
+> Example responses
+
+>200 Response
+
+```json
+{
+	'batch_id':'string'
+}
+```
+
+>400 and 401 Response
+
+```json
+{
+	'Message':'error'
+}
+```
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response will return a provider object.|[ResultResponse](#schemaresultresponse)|
+
+<h2 id="CAQH-ProView-RosterAPI-Roster-next-step">Next Steps</h2>
+
+> Parsing the response
+
+```python
+
+batch_status = ""
+batch_time = ""
+roster_result = ""
+
+if(response.status_Code == 200):
+	batch_status = response.json()["batch_status"]
+	batch_time = response.json()["batch_time"]
+	roster_result = response.json()["roster_result"]
+	
+
+```
+
+### See also:
+
+* [Update Roster](#todo)
+* [Delete Roster](#todo)
+* [Roster Quick Add](#todo)
+
 <h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Add Roster Request [POST]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-Roster-getting-started">Getting Started</h2>
@@ -96,7 +276,9 @@ data = [
     "application_type": "Conditional - see description",
     "affiliation_flag": "Optional",
     "organization_id": "Required",
-    "region_id": "Optional"
+    "region_id": "Optional",
+    "anniversary_date": "string",
+    "exception_description": "string"
   }
 ]
 
@@ -215,14 +397,23 @@ If your request has been formatted correctly, it will return a batch id and a 20
 
 ```python
 
+batch_id = ""
+
 if(response.status_Code == 200):
 	batch_id = response.json()["batch_id"]
+	
+
+Message = ""
 
 if(response.status_Code == 400):
 	Message = response.json()["Message"]
+	
+
+Message = ""
 
 if(response.status_Code == 401):
 	Message = response.json()["Message"]
+	
 
 ```
 
@@ -343,7 +534,9 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
     "application_type": "Conditional - see description",
     "affiliation_flag": "Optional",
     "organization_id": "Required",
-    "region_id": "Optional"
+    "region_id": "Optional",
+    "anniversary_date": "string",
+    "exception_description": "string"
   }
 ]
 
@@ -363,6 +556,8 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |affiliation_flag|string|false|none|
 |organization_id|string|false|none|
 |region_id|string|false|none|
+|anniversary_date|string|false|none|
+|exception_description|string|false|none|
 
 <h2 id="tocSaddresponse">AddResponse</h2>
 
@@ -397,4 +592,66 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |Name|Type|Required|Description|
 |---|--|--|-----|
 |Message|string|false|none|
+
+<h2 id="tocSresultresponse">ResultResponse</h2>
+
+<a id="schemaresultresponse"></a>
+
+```json
+{
+  "batch_status": "string",
+  "batch_time": "string",
+  "roster_result": [
+    {
+      "provider": {
+        "first_name": "Required",
+        "middle_name": "Optional",
+        "last_name": "Required",
+        "name_suffix": "Optional",
+        "gender": "Required (M/F)",
+        "address1": "Required",
+        "address2": "Optional",
+        "city": "Required",
+        "state": "Required",
+        "zip": "Required",
+        "zip_extn": "Optional",
+        "phone": "Optional",
+        "fax": "Optional",
+        "email": "Optional",
+        "practice_state": "Required",
+        "birthdate": "Required (YYYYMMDD)",
+        "ssn": "One required*",
+        "short_ssn": "Optional",
+        "dea": "One required*",
+        "upin": "One required*",
+        "type": "Required",
+        "tax_id": "Optional",
+        "npi": "One required*",
+        "license_state": "Required if license_number",
+        "license_number": "One required*"
+      },
+      "caqh_provider_id": "Required",
+      "po_provider_id": "Optional",
+      "last_recredential_date": "Optional (YYYYMMDD)",
+      "next_recredential_date": "Optional (YYYYMMDD)",
+      "delegation_flag": "Optional",
+      "application_type": "Conditional - see description",
+      "affiliation_flag": "Optional",
+      "organization_id": "Required",
+      "region_id": "Optional",
+      "anniversary_date": "string",
+      "exception_description": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|batch_status|string|false|none|
+|batch_time|string|false|none|
+|roster_result|[AddRequest](#schemaaddrequest)|false|none|
 
