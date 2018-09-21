@@ -25,14 +25,8 @@ Welcome to the <b>ProView® and DirectAssure® Roster and Status Check API Speci
 Interacting with the CAQH API will often require several REST calls to be made in sequence.  You will receive a `batch-id` in the response to any request to add, update or delete data.  This allows you to continue performing other operations and check in later if the CAQH process is taking a long time.  Each section in this documentation will have a `Next Steps` section that will link you to the calls you may want to make next.  Please consult the following diagram to get an idea of what calls are commonly linked together:
 
 <img id="myImg" src="images/HealthPlan workflow with CAQH APIs.png" style="width:100%;max-width:300px">
-
-<!-- The Modal -->
-<div id="myimgModel" class="imgModel">
-
-  <!-- The Close Button -->
+<div id="myimgModel" class="imgModel" style="display:noned">
   <span class="close">&times;</span>
-
-  <!-- Modal Content (The Image) -->
   <img class="imgModel-content" id="img01">
 </div>
 
