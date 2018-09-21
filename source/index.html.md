@@ -103,7 +103,12 @@ headers = {
 username = "yourUsername"
 password = "yourPassword"
 ```
-
+```csharp
+//set up HTTP authentication header
+HttpClient client = new HttpClient();
+var byteArray = Encoding.ASCII.GetBytes("username:password");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+```
 A REST call will need to include headers to communicate meta-information about the call itself.  In the headers to the CAQH API, you will be passing in the content type of the message body (JSON) and your authorization.  See in the sidebar for how to best set up your headers in your language.
 
 CAQH uses a standard form of authorization where your credentials are sent in the form of
@@ -127,16 +132,17 @@ params = {
 }
 ```
 
-
 ```csharp
-var parameters = new Dictionary<string,string>()
-	{
-		{ "parameter1", "value"},
-		{ "parameter2", "0"}
-	};
-	
-var encodedContent = new FormUrlEncodedContent(params);
-	
+//base url for api call
+string url = "https://proview-demo.caqh.org/api/endpoint?";
+//url parameters to add
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["param1"] = "value1";
+queryString["param2"] = "value2";
+...
+//add params onto end of url
+url += queryString.ToString();
+//new url: https://proview-demo.caqh.org/api/endpoint?param1=value1&param2=value2
 ```
 
 `https://URL.url/api/endpoint` 
@@ -161,13 +167,22 @@ data = {
 ```
 
 ```csharp
+//example of setting up a nested JSON body object
+JObject body = new JObject(
+new JProperty("provider", new JObject(
+    new JProperty("first_name", ""),
+    new JProperty("middle_name", ""),
+    ...
+    new JProperty("license_number", ""))),
+new JProperty("caqh_provider_id", ""),
+new JProperty("po_provider_id", ""),
+...
+new JProperty("region_id", ""));
 
-var data = new
-	{
-		field1 = "string",
-		field2 = 0
-	};
-
+//Many API calls require an array of JSON, even if it's only one object being sent
+JArray bodyArray = new JArray(body);
+var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
+content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 ```
 
 The second way that information can be sent across is in the form of a body object attached to a `POST` call or `PUT` call.  The CAQH API will accept JSON objects in the body of POST calls.  You will be able to find the proper object in the documentation for the endpoint.  Not all fields on the body object will be required, so pay attention to the minimum required fields and their format.  The request body will always be JSON, however you may receive XML responses from the API, so pay attention to the documentation and what format the response is in.  
@@ -214,6 +229,47 @@ responsePut = put(URL, params = params, data = data, auth = (username, password)
 responseDelete = delete(URL, params = params, auth = (username, password))
 ```
 
+```csharp
+
+string url = "https://proview-demo.caqh.org/api/endpoint";
+
+//set up HTTP auth
+var byteArray = Encoding.ASCII.GetBytes("username:password");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+//setup url parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["param1"] = "value1";
+queryString["param1"] = "value2";
+...
+url += queryString.ToString();
+
+//example of setting up a nested JSON body object
+JObject body = new JObject(
+new JProperty("provider", new JObject(
+    new JProperty("first_name", ""),
+    new JProperty("middle_name", ""),
+    ...
+    new JProperty("license_number", ""))),
+new JProperty("caqh_provider_id", ""),
+new JProperty("po_provider_id", ""),
+...
+new JProperty("region_id", ""));
+
+//Many API calls require an array of JSON, even if it's only one object being sent
+JArray bodyArray = new JArray(body);
+var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
+content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+//GET (no body)
+var result = client.GetAsync(url).Result;
+//POST
+var result = client.PostAsync(url, content).Result;
+//retrieve HTTP Response message
+string resultTxt = result.Content.ReadAsStringAsync().Result;
+dynamic obj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
+Console.WriteLine(obj.ToString());
+```
 An HTTP REST call sent to an API should use one of the following HTTP methods:
 
 | Method | Usage |
