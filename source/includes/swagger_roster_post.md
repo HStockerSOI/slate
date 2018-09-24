@@ -2,11 +2,10 @@
 
 <h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Get Roster Result [GET]</h1>
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-getting-started">Getting Started</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGETGET-getting-started">Getting Started</h2>
 
 ```python
 from requests import get
-from json import dumps
 
 url = "https://proview-demo.caqh.org/RosterAPI/api/Roster"
 ```
@@ -31,7 +30,7 @@ A PO can request the status and results of a previous Add to Roster, Update on R
 |---|---|
 |GET | https://proview-demo.caqh.org/RosterAPI/api/Roster |
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-staging-data">Staging The Data</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-staging-data">Staging The Data</h2>
 
 > Create parameters object
 
@@ -51,25 +50,20 @@ var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["batch_id"] = "string";
 url += queryString.ToString();
 ```
-<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-parameter">Parameters</h3>
+<h3 id="CAQH-ProView-RosterAPI-RosterGET-staging-data-parameter">Parameters</h3>
 
   The batch id from a previous create, update or delete request.  The data should be passed in to the [parameters](#query-parameters) of the request.
 
-<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-body">Body</h3>
-
-    The data should be passed in to the [request body](#request-body) of the request.
-
-<h2 id="CAQH-ProView-RosterAPI-Roster-api-definition"> GET /Roster</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-api-definition"> GET /Roster</h2>
 
 The Roster Operation Result will take a `batch_id` in its parameters.  This batch id will have been returned to you by a successful `POST`, `PUT` or `DELETE`.  A `GET` call cannot have a request body.
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-making-request">Making The Request</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-making-request">Making The Request</h2>
 
 > Full API Request
 
 ```python
 from requests import get
-from json import dumps
 
 headers = {
   "Accept": '*/*'
@@ -149,12 +143,7 @@ Console.WriteLine(responseObj.ToString());
 |---|---|---|---|
 |batch_id|query|string|true|The batch id from a previous create, update or delete request.|
 
-<h3 id="get__roster-body">Body</h3>
-
-|Parameter|Type|Required|Description|
-|---|---|---|---|
-
-<h2 id="CAQH-ProView-RosterAPI-Roster-responses">Responses</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-responses">Responses</h2>
 
 > Example responses
 
@@ -174,11 +163,17 @@ Console.WriteLine(responseObj.ToString());
 }
 ```
 
+### Update Response
+
+### Add Response
+
+### Delete Response
+
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response will return a provider object.|[ResultResponse](#schemaresultresponse)|
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-next-step">Next Steps</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-next-step">Next Steps</h2>
 
 > Parsing the response
 
@@ -218,9 +213,223 @@ if ((int)result.StatusCode == 200)
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Update Roster Request [PUT]</h1>
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUTPUT-getting-started">Getting Started</h2>
+
+```python
+from requests import put
+from json import dumps
+
+url = "https://proview-demo.caqh.org/RosterAPI/api/Roster"
+```
+
+``` csharp
+//includes
+using System;
+using System.Text;
+using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//base url
+string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+```
+
+A PO can update one or more providers on the roster by submitting a call to the following URL. At least one of the fields with an asterisk (*) is required to process an Update. See 2.1.2 for the immediate system response.
+
+| Method | URL |
+|---|---|
+|PUT | https://proview-demo.caqh.org/RosterAPI/api/Roster |
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data">Staging The Data</h2>
+
+> Create parameters object
+
+  If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
+
+```python
+
+params = {
+}
+```
+
+```csharp
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+";
+url += queryString.ToString();
+```
+<h3 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data-parameter">Parameters</h3>
+
+  The data should be passed in to the [parameters](#query-parameters) of the request.
+
+<h3 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data-body">Body</h3>
+
+    The data should be passed in to the [request body](#request-body) of the request.
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-api-definition"> PUT /Roster</h2>
+
+The Roster Operation Result will take a `batch_id` in its parameters.  This batch id will have been returned to you by a successful `POST`, `PUT` or `DELETE`.  A `GET` call cannot have a request body.
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-making-request">Making The Request</h2>
+
+> Full API Request
+
+```python
+from requests import put
+from json import dumps
+
+headers = {
+  "Content-Type": 'application/json',
+  "Accept": '*/*'
+}
+
+params = {
+}
+
+data = [
+  {
+    "organization_id": "string",
+    "caqh_provider_id": "string",
+    "po_provider_id": "string",
+    "last_recredential_date": "string",
+    "next_recredential_date": "string",
+    "delegation_flag": "string",
+    "application_type": "string",
+    "affiliation_flag": "string"
+  }
+]
+
+username = "yourUsername"
+password = "yourPassword"
+
+response = put("https://proview-demo.caqh.org/RosterAPI/api/Roster", params = params, data = dumps(data), headers = headers, auth = (username, password))
+
+print(response.json())
+
+```
+
+```java
+URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("PUT");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```csharp
+//includes
+using System;
+using System.Text;
+using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//HTTPClient should be instantiated once and re-used in your application
+HttpClient client = new HttpClient();
+
+//base url
+string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+
+//set up HTTP auth (replace username/password with yours)
+var byteArray = Encoding.ASCII.GetBytes("username:password");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+//get the response message and parse it
+string resultTxt = result.Content.ReadAsStringAsync().Result;
+dynamic responseObj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
+Console.WriteLine(responseObj.ToString());
+
+```
+
+`PUT /Roster`
+
+<h3 id="put__roster-parameters">Parameters</h3>
+
+|Parameter|Type|Required|Description|
+|---|---|---|---|
+
+<h3 id="put__roster-body">Body</h3>
+
+|Parameter|Type|Required|Description|
+|---|---|---|---|
+| body | [RosterUpdateRequest](#schemarosterupdaterequest) | true | none |
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-responses">Responses</h2>
+
+> Example responses
+
+>200 Response
+
+```json
+{
+	'batch_id':'string'
+}
+```
+
+>400 and 401 Response
+
+```json
+{
+	'Message':'error'
+}
+```
+
+Responses
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|200 response|[RosterResponse](#schemarosterresponse)|
+
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-next-step">Next Steps</h2>
+
+> Parsing the response
+
+```python
+
+batch_Id = ""
+
+if(response.status_Code == 200):
+	batch_Id = response.json()["batch_Id"]
+	
+
+```
+
+```csharp
+
+string batch_Id = "";
+
+if ((int)result.StatusCode == 200)
+{
+	batch_Id = responseObj.batch_Id;
+	
+}
+
+```
+
+### See also:
+
+* [Update Roster](#todo)
+* [Delete Roster](#todo)
+* [Roster Quick Add](#todo)
+
 <h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Add Roster Request [POST]</h1>
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-getting-started">Getting Started</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOSTPOST-getting-started">Getting Started</h2>
 
 ```python
 from requests import post
@@ -249,7 +458,7 @@ A PO can add one or more providers to the roster by submitting a call to the fol
 |---|---|
 |POST | https://proview-demo.caqh.org/RosterAPI/api/Roster |
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-staging-data">Staging The Data</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data">Staging The Data</h2>
 
 > Create parameters object
 
@@ -269,19 +478,19 @@ var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["product"] = "PV";
 url += queryString.ToString();
 ```
-<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-parameter">Parameters</h3>
+<h3 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data-parameter">Parameters</h3>
 
   The status endpoint will take the Product of `PV`.  The data should be passed in to the [parameters](#query-parameters) of the request.
 
-<h3 id="CAQH-ProView-RosterAPI-Roster-staging-data-body">Body</h3>
+<h3 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data-body">Body</h3>
 
   The ProView roster add endpoint takes in a specific object as its json body.  You can find this object and how to compose it in the [schemas section](#tocSaddrequest).    The data should be passed in to the [request body](#request-body) of the request.
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-api-definition"> POST /Roster</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-api-definition"> POST /Roster</h2>
 
 The body of the Roster Add endpoint can take one or more [provider add](#tocSaddrequest) objects.  If you only have one object, the body must still be passed in as an array.  All body fields are passed in as strings, however many of them have a specific format.  Please see the example object for the format that is required.
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-making-request">Making The Request</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-making-request">Making The Request</h2>
 
 > Full API Request
 
@@ -393,43 +602,61 @@ url += queryString.ToString();
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-//Build POST body (you can also load in external json files as a string, this is to build one on the fly)
+//Body Schema
+/*
+[
+  {
+    "provider": {
+      "first_name": "Required",
+      "middle_name": "Optional",
+      "last_name": "Required",
+      "name_suffix": "Optional",
+      "gender": "Required (M/F)",
+      "address1": "Required",
+      "address2": "Optional",
+      "city": "Required",
+      "state": "Required",
+      "zip": "Required",
+      "zip_extn": "Optional",
+      "phone": "Optional",
+      "fax": "Optional",
+      "email": "Optional",
+      "practice_state": "Required",
+      "birthdate": "Required (YYYYMMDD)",
+      "ssn": "One required*",
+      "short_ssn": "Optional",
+      "dea": "One required*",
+      "upin": "One required*",
+      "type": "Required",
+      "tax_id": "Optional",
+      "npi": "One required*",
+      "license_state": "Required if license_number",
+      "license_number": "One required*"
+    },
+    "caqh_provider_id": "Required",
+    "po_provider_id": "Optional",
+    "last_recredential_date": "Optional (YYYYMMDD)",
+    "next_recredential_date": "Optional (YYYYMMDD)",
+    "delegation_flag": "Optional",
+    "application_type": "Conditional - see description",
+    "affiliation_flag": "Optional",
+    "organization_id": "Required",
+    "region_id": "Optional",
+    "anniversary_date": "string",
+    "exception_description": "string"
+  }
+]
+*/
+//Build JSON body (match above schema)
+//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in C#.
 JObject body = new JObject(
-new JProperty("provider", new JObject(
-    new JProperty("first_name", ""),
-    new JProperty("middle_name", ""),
-    new JProperty("last_name", ""),
-    new JProperty("name_suffix", ""),
-    new JProperty("gender", ""),
-    new JProperty("address1", ""),
-    new JProperty("address2", ""),
-    new JProperty("city", ""),
-    new JProperty("state", ""),
-    new JProperty("zip", ""),
-    new JProperty("zip_extn", ""),
-    new JProperty("phone", ""),
-    new JProperty("fax", ""),
-    new JProperty("email", ""),
-    new JProperty("practice_state", ""),
-    new JProperty("birthdate", ""),
-    new JProperty("ssn", ""),
-    new JProperty("short_ssn", ""),
-    new JProperty("dea", ""),
-    new JProperty("upin", ""),
-    new JProperty("type", ""),
-    new JProperty("tax_id", ""),
-    new JProperty("npi", ""),
-    new JProperty("license_state", ""),
-    new JProperty("license_number", ""))),
-new JProperty("caqh_provider_id", ""),
-new JProperty("po_provider_id", ""),
-new JProperty("last_recredential_date", ""),
-new JProperty("next_recredential_date", ""),
-new JProperty("delegation_flag", ""),
-new JProperty("application_type", ""),
-new JProperty("affiliation_flag", ""),
-new JProperty("organization_id", ""),
-new JProperty("region_id", ""));
+new JProperty("property_1", new JObject(
+    new JProperty("subproperty_1", ""),
+    ...
+    new JProperty("subproperty_n", ""))),
+new JProperty("property_2", ""),
+...
+new JProperty("property_n", ""));
 //Body is taken as an array, even with only one element
 JArray bodyArray = new JArray(body);
 var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
@@ -465,7 +692,7 @@ Console.WriteLine(responseObj.ToString());
 |---|---|
 |product|PV|
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-responses">Responses</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-responses">Responses</h2>
 
 > Example responses
 
@@ -489,20 +716,20 @@ If your request has been formatted correctly, it will return a batch id and a 20
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The Add to Roster Web Service immediately returns a Response JSON that includes a system-generated unique Batch ID for the request.|[AddResponse](#schemaaddresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|If there was an error with the request, a 400 status code will be returned with an object that contains the field "Message" with the error.  Please check to make sure your JSON request body is properly formatted.|[AddErrorResponse](#schemaadderrorresponse)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|If your credentials are incorrect or not authorized to access this endpoint, it will return a 401 status code representing an unauthorized response.  Please double check your credentials and the URL to make sure you're calling the correct environment.|[AddErrorResponse](#schemaadderrorresponse)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The Add to Roster Web Service immediately returns a Response JSON that includes a system-generated unique Batch ID for the request.|[RosterResponse](#schemarosterresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|If there was an error with the request, a 400 status code will be returned with an object that contains the field "Message" with the error.  Please check to make sure your JSON request body is properly formatted.|[RosterErrorReponse](#schemarostererrorreponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|If your credentials are incorrect or not authorized to access this endpoint, it will return a 401 status code representing an unauthorized response.  Please double check your credentials and the URL to make sure you're calling the correct environment.|[RosterErrorReponse](#schemarostererrorreponse)|
 
-<h2 id="CAQH-ProView-RosterAPI-Roster-next-step">Next Steps</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-next-step">Next Steps</h2>
 
 > Parsing the response
 
 ```python
 
-batch_id = ""
+batch_Id = ""
 
 if(response.status_Code == 200):
-	batch_id = response.json()["batch_id"]
+	batch_Id = response.json()["batch_Id"]
 	
 
 Message = ""
@@ -521,11 +748,11 @@ if(response.status_Code == 401):
 
 ```csharp
 
-string batch_id = "";
+string batch_Id = "";
 
 if ((int)result.StatusCode == 200)
 {
-	batch_id = responseObj.batch_id;
+	batch_Id = responseObj.batch_Id;
 	
 }
 
@@ -672,10 +899,13 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 
 ```
 
+*Roster Insert Request*
+
 ### Properties
 
 |Name|Type|Required|Description|
 |---|--|--|-----|
+|Roster Insert Request|[object]|false|none|
 |provider|[Provider](#schemaprovider)|false|none|
 |caqh_provider_id|string|false|none|
 |po_provider_id|string|false|none|
@@ -689,26 +919,28 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |anniversary_date|string|false|none|
 |exception_description|string|false|none|
 
-<h2 id="tocSaddresponse">AddResponse</h2>
+<h2 id="tocSrosterresponse">RosterResponse</h2>
 
-<a id="schemaaddresponse"></a>
+<a id="schemarosterresponse"></a>
 
 ```json
 {
-  "batch_id": "string"
+  "batch_Id": "string"
 }
 
 ```
+
+*Roster OperationResponse*
 
 ### Properties
 
 |Name|Type|Required|Description|
 |---|--|--|-----|
-|batch_id|string|false|none|
+|batch_Id|string|false|none|
 
-<h2 id="tocSadderrorresponse">AddErrorResponse</h2>
+<h2 id="tocSrostererrorreponse">RosterErrorReponse</h2>
 
-<a id="schemaadderrorresponse"></a>
+<a id="schemarostererrorreponse"></a>
 
 ```json
 {
@@ -716,6 +948,8 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 }
 
 ```
+
+*Roster Error Reponse*
 
 ### Properties
 
@@ -777,6 +1011,8 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 
 ```
 
+*Roster Result Response*
+
 ### Properties
 
 |Name|Type|Required|Description|
@@ -784,4 +1020,63 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |batch_status|string|false|none|
 |batch_time|string|false|none|
 |roster_result|[AddRequest](#schemaaddrequest)|false|none|
+
+<h2 id="tocSrosterupdate">RosterUpdate</h2>
+
+<a id="schemarosterupdate"></a>
+
+```json
+{
+  "organization_id": "string",
+  "caqh_provider_id": "string",
+  "po_provider_id": "string",
+  "last_recredential_date": "string",
+  "next_recredential_date": "string",
+  "delegation_flag": "string",
+  "application_type": "string",
+  "affiliation_flag": "string"
+}
+
+```
+
+*Update Roster Request*
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|organization_id|string|false|none|
+|caqh_provider_id|string|false|none|
+|po_provider_id|string|false|none|
+|last_recredential_date|string|false|none|
+|next_recredential_date|string|false|none|
+|delegation_flag|string|false|none|
+|application_type|string|false|none|
+|affiliation_flag|string|false|none|
+
+<h2 id="tocSrosterupdaterequest">RosterUpdateRequest</h2>
+
+<a id="schemarosterupdaterequest"></a>
+
+```json
+[
+  {
+    "organization_id": "string",
+    "caqh_provider_id": "string",
+    "po_provider_id": "string",
+    "last_recredential_date": "string",
+    "next_recredential_date": "string",
+    "delegation_flag": "string",
+    "application_type": "string",
+    "affiliation_flag": "string"
+  }
+]
+
+```
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|*anonymous*|[[RosterUpdate](#schemarosterupdate)]|false|none|
 
