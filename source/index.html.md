@@ -63,6 +63,32 @@ for row in cursor:
 	data.append(roster)
 ```
 
+```csharp
+//You may need to use NuGet to install the MS SQL package
+using System.Data.SqlClient;
+
+string connectionString = "Driver={SQL Server Native Client 11.0};Server=server_name;Database=db_name;Trusted_Connection=yes;";
+string queryString = "SELECT * FROM DirectoryRosterFile";
+
+using (SqlConnection connection = new SqlConnection(connectionString))
+{
+    SqlCommand command = new SqlCommand(queryString, connection);
+    connection.Open();
+    SqlDataReader reader = command.ExecuteReader();
+    try
+    {
+        while(reader.Read())
+        {
+            //once you have your data, refer to Anatomy of a Rest Call/Request Body to see how to populate your request with it
+            Console.WriteLine(String.Format("{0}, {1}", reader[0], reader[1]));
+        }
+    } finally
+    {
+        reader.Close();
+    }
+}
+
+```
 In this code snippet we are querying data from a database and composing an object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
 
 You may choose to separate your data into multiple tables in your database, so update your query to reflect the necessary joins to retrieve all the relevant data.  In this case we have simplified the example so all the data is stored in a single table.  The SQL language we are using here is specific to SQL Server (Transact-SQL), so make sure you're aware of what SQL language your database uses and update it accordingly.
@@ -161,6 +187,10 @@ data = {
 ```
 
 ```csharp
+//You may need to use NuGet to install the Newtonsoft.JSON package
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 //example of setting up a nested JSON body object
 JObject body = new JObject(
 new JProperty("provider", new JObject(

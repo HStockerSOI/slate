@@ -24,6 +24,7 @@ using Newtonsoft.Json.Linq;
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
 ```
+
 A PO can request the status and results of a previous Add to Roster, Update on Roster, or Delete from Roster request by submitting the system-generated Batch ID in the following URL.
 
 | Method | URL |
@@ -137,6 +138,7 @@ var result = client.GetAsync(url).Result;
 string resultTxt = result.Content.ReadAsStringAsync().Result;
 dynamic responseObj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
 Console.WriteLine(responseObj.ToString());
+
 ```
 
 `GET /Roster`
@@ -513,6 +515,8 @@ Message = ""
 
 if(response.status_Code == 401):
 	Message = response.json()["Message"]
+	
+
 ```
 
 ```csharp
@@ -540,6 +544,7 @@ if ((int)result.StatusCode == 401)
 	Message = responseObj.Message;
 	
 }
+
 ```
 
 You will receive a [batch id](#tocSaddresponse) which should be passed in to the [roster operation result](#todo) periodically to check if the operation has been processed.  
