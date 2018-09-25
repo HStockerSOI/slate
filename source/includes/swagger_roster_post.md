@@ -1,8 +1,8 @@
 
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Get Roster Result [GET]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIGETintro">Get Roster Result [GET]</h1>
 
-<h2 id="CAQH-ProView-RosterAPI-RosterGETGET-getting-started">Getting Started</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterGET-getting-started">Getting Started</h2>
 
 ```python
 from requests import get
@@ -213,9 +213,9 @@ if ((int)result.StatusCode == 200)
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Update Roster Request [PUT]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPUTintro">Update Roster Request [PUT]</h1>
 
-<h2 id="CAQH-ProView-RosterAPI-RosterPUTPUT-getting-started">Getting Started</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPUT-getting-started">Getting Started</h2>
 
 ```python
 from requests import put
@@ -251,20 +251,22 @@ A PO can update one or more providers on the roster by submitting a call to the 
   If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
 
 ```python
+product = 'string'
 
 params = {
+  "product": product
 }
 ```
 
 ```csharp
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
-";
+queryString["product"] = "string";
 url += queryString.ToString();
 ```
 <h3 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data-parameter">Parameters</h3>
 
-  The data should be passed in to the [parameters](#query-parameters) of the request.
+  Product should be either PV or DA for ProView or DirectAssure.  The data should be passed in to the [parameters](#query-parameters) of the request.
 
 <h3 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data-body">Body</h3>
 
@@ -288,6 +290,7 @@ headers = {
 }
 
 params = {
+  "product": 'string'
 }
 
 data = [
@@ -313,7 +316,7 @@ print(response.json())
 ```
 
 ```java
-URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster");
+URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster?product=string");
 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 con.setRequestMethod("PUT");
 int responseCode = con.getResponseCode();
@@ -345,6 +348,12 @@ HttpClient client = new HttpClient();
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
 
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["product"] = "string";
+//add parameters to base url
+url += queryString.ToString();
+
 //set up HTTP auth (replace username/password with yours)
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
@@ -362,6 +371,7 @@ Console.WriteLine(responseObj.ToString());
 
 |Parameter|Type|Required|Description|
 |---|---|---|---|
+|product|query|string|true|Product should be either PV or DA for ProView or DirectAssure.|
 
 <h3 id="put__roster-body">Body</h3>
 
@@ -427,13 +437,12 @@ if ((int)result.StatusCode == 200)
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPI">- Add Roster Request [POST]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro">Add Roster Request [POST]</h1>
 
-<h2 id="CAQH-ProView-RosterAPI-RosterPOSTPOST-getting-started">Getting Started</h2>
+<h2 id="CAQH-ProView-RosterAPI-RosterPOST-getting-started">Getting Started</h2>
 
 ```python
 from requests import post
-from json import dumps
 
 url = "https://proview-demo.caqh.org/RosterAPI/api/Roster"
 ```
@@ -480,11 +489,7 @@ url += queryString.ToString();
 ```
 <h3 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data-parameter">Parameters</h3>
 
-  The status endpoint will take the Product of `PV`.  The data should be passed in to the [parameters](#query-parameters) of the request.
-
-<h3 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data-body">Body</h3>
-
-  The ProView roster add endpoint takes in a specific object as its json body.  You can find this object and how to compose it in the [schemas section](#tocSaddrequest).    The data should be passed in to the [request body](#request-body) of the request.
+  The status endpoint will take the Product of `PV` or `DA`, depending on if you are on ProView or DirectAssure.  The data should be passed in to the [parameters](#query-parameters) of the request.
 
 <h2 id="CAQH-ProView-RosterAPI-RosterPOST-api-definition"> POST /Roster</h2>
 
@@ -496,7 +501,6 @@ The body of the Roster Add endpoint can take one or more [provider add](#tocSadd
 
 ```python
 from requests import post
-from json import dumps
 
 headers = {
   "Content-Type": 'application/json',
@@ -507,53 +511,10 @@ params = {
   "product": 'PV'
 }
 
-data = [
-  {
-    "provider": {
-      "first_name": "Required",
-      "middle_name": "Optional",
-      "last_name": "Required",
-      "name_suffix": "Optional",
-      "gender": "Required (M/F)",
-      "address1": "Required",
-      "address2": "Optional",
-      "city": "Required",
-      "state": "Required",
-      "zip": "Required",
-      "zip_extn": "Optional",
-      "phone": "Optional",
-      "fax": "Optional",
-      "email": "Optional",
-      "practice_state": "Required",
-      "birthdate": "Required (YYYYMMDD)",
-      "ssn": "One required*",
-      "short_ssn": "Optional",
-      "dea": "One required*",
-      "upin": "One required*",
-      "type": "Required",
-      "tax_id": "Optional",
-      "npi": "One required*",
-      "license_state": "Required if license_number",
-      "license_number": "One required*"
-    },
-    "caqh_provider_id": "Required",
-    "po_provider_id": "Optional",
-    "last_recredential_date": "Optional (YYYYMMDD)",
-    "next_recredential_date": "Optional (YYYYMMDD)",
-    "delegation_flag": "Optional",
-    "application_type": "Conditional - see description",
-    "affiliation_flag": "Optional",
-    "organization_id": "Required",
-    "region_id": "Optional",
-    "anniversary_date": "string",
-    "exception_description": "string"
-  }
-]
-
 username = "yourUsername"
 password = "yourPassword"
 
-response = post("https://proview-demo.caqh.org/RosterAPI/api/Roster", params = params, data = dumps(data), headers = headers, auth = (username, password))
+response = post("https://proview-demo.caqh.org/RosterAPI/api/Roster", params = params, headers = headers, auth = (username, password))
 
 print(response.json())
 
@@ -604,48 +565,7 @@ client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basi
 
 //Body Schema
 /*
-[
-  {
-    "provider": {
-      "first_name": "Required",
-      "middle_name": "Optional",
-      "last_name": "Required",
-      "name_suffix": "Optional",
-      "gender": "Required (M/F)",
-      "address1": "Required",
-      "address2": "Optional",
-      "city": "Required",
-      "state": "Required",
-      "zip": "Required",
-      "zip_extn": "Optional",
-      "phone": "Optional",
-      "fax": "Optional",
-      "email": "Optional",
-      "practice_state": "Required",
-      "birthdate": "Required (YYYYMMDD)",
-      "ssn": "One required*",
-      "short_ssn": "Optional",
-      "dea": "One required*",
-      "upin": "One required*",
-      "type": "Required",
-      "tax_id": "Optional",
-      "npi": "One required*",
-      "license_state": "Required if license_number",
-      "license_number": "One required*"
-    },
-    "caqh_provider_id": "Required",
-    "po_provider_id": "Optional",
-    "last_recredential_date": "Optional (YYYYMMDD)",
-    "next_recredential_date": "Optional (YYYYMMDD)",
-    "delegation_flag": "Optional",
-    "application_type": "Conditional - see description",
-    "affiliation_flag": "Optional",
-    "organization_id": "Required",
-    "region_id": "Optional",
-    "anniversary_date": "string",
-    "exception_description": "string"
-  }
-]
+false
 */
 //Build JSON body (match above schema)
 //Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in C#.
@@ -678,13 +598,7 @@ Console.WriteLine(responseObj.ToString());
 
 |Parameter|Type|Required|Description|
 |---|---|---|---|
-|product|query|string|true|The status endpoint will take the Product of `PV`.|
-
-<h3 id="roster-post-add-body">Body</h3>
-
-|Parameter|Type|Required|Description|
-|---|---|---|---|
-| body | [AddRequest](#schemaaddrequest) | true | The ProView roster add endpoint takes in a specific object as its json body.  You can find this object and how to compose it in the [schemas section](#tocSaddrequest). |
+|product|query|string|true|The status endpoint will take the Product of `PV` or `DA`, depending on if you are on ProView or DirectAssure.|
 
 #### Enumerated Values
 
@@ -782,6 +696,214 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro">Roster Delete Request [DELETE]</h1>
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-getting-started">Getting Started</h2>
+
+```python
+from requests import post
+
+url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster"
+```
+
+``` csharp
+//includes
+using System;
+using System.Text;
+using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//base url
+string url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
+```
+
+A PO can delete one or more providers from the roster by submitting a call to the following URL.
+
+| Method | URL |
+|---|---|
+|POST | https://proview-demo.caqh.org/RosterAPI/api/Deroster |
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data">Staging The Data</h2>
+
+> Create parameters object
+
+  If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
+
+```python
+
+params = {
+}
+```
+
+```csharp
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+";
+url += queryString.ToString();
+```
+<h3 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data-parameter">Parameters</h3>
+
+  The data should be passed in to the [parameters](#query-parameters) of the request.
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-api-definition"> POST /Deroster</h2>
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-making-request">Making The Request</h2>
+
+> Full API Request
+
+```python
+from requests import post
+
+headers = {
+  "Accept": '*/*'
+}
+
+params = {
+}
+
+username = "yourUsername"
+password = "yourPassword"
+
+response = post("https://proview-demo.caqh.org/RosterAPI/api/Deroster", params = params, headers = headers, auth = (username, password))
+
+print(response.json())
+
+```
+
+```java
+URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Deroster");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```csharp
+//includes
+using System;
+using System.Text;
+using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//HTTPClient should be instantiated once and re-used in your application
+HttpClient client = new HttpClient();
+
+//base url
+string url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
+
+//set up HTTP auth (replace username/password with yours)
+var byteArray = Encoding.ASCII.GetBytes("username:password");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+//Body Schema
+/*
+undefined
+*/
+//Build JSON body (match above schema)
+//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in C#.
+JObject body = new JObject(
+new JProperty("property_1", new JObject(
+    new JProperty("subproperty_1", ""),
+    ...
+    new JProperty("subproperty_n", ""))),
+new JProperty("property_2", ""),
+...
+new JProperty("property_n", ""));
+//Body is taken as an array, even with only one element
+JArray bodyArray = new JArray(body);
+var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
+content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+//Send the POST Request
+var result = client.PostAsync(url, content).Result;
+
+//get the response message and parse it
+string resultTxt = result.Content.ReadAsStringAsync().Result;
+dynamic responseObj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
+Console.WriteLine(responseObj.ToString());
+
+```
+
+`POST /Deroster`
+
+<h3 id="delreq-parameters">Parameters</h3>
+
+|Parameter|Type|Required|Description|
+|---|---|---|---|
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-responses">Responses</h2>
+
+> Example responses
+
+>200 Response
+
+```json
+{
+	'batch_id':'string'
+}
+```
+
+>400 and 401 Response
+
+```json
+{
+	'Message':'error'
+}
+```
+
+Batch Id
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|200 Response returns a batch ID.|[RosterResponse](#schemarosterresponse)|
+
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-next-step">Next Steps</h2>
+
+> Parsing the response
+
+```python
+
+batch_Id = ""
+
+if(response.status_Code == 200):
+	batch_Id = response.json()["batch_Id"]
+	
+
+```
+
+```csharp
+
+string batch_Id = "";
+
+if ((int)result.StatusCode == 200)
+{
+	batch_Id = responseObj.batch_Id;
+	
+}
+
+```
+
+### See also:
+
+* [Update Roster](#todo)
+* [Delete Roster](#todo)
+* [Roster Quick Add](#todo)
+
 # Schemas
 
 <h2 id="tocSprovider">Provider</h2>
@@ -849,9 +971,9 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |license_state|string|false|The two-Character ANSI state code that corresponds to the provider’s license state This field is required if Provider License Number is populated.|
 |license_number|integer(int32)|false|This field denotes the provider’s State License Number. The field is required if Provider License State is populated.|
 
-<h2 id="tocSaddrequest">AddRequest</h2>
+<h2 id="tocSproviderrequest">ProviderRequest</h2>
 
-<a id="schemaaddrequest"></a>
+<a id="schemaproviderrequest"></a>
 
 ```json
 [
@@ -965,48 +1087,7 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 {
   "batch_status": "string",
   "batch_time": "string",
-  "roster_result": [
-    {
-      "provider": {
-        "first_name": "Required",
-        "middle_name": "Optional",
-        "last_name": "Required",
-        "name_suffix": "Optional",
-        "gender": "Required (M/F)",
-        "address1": "Required",
-        "address2": "Optional",
-        "city": "Required",
-        "state": "Required",
-        "zip": "Required",
-        "zip_extn": "Optional",
-        "phone": "Optional",
-        "fax": "Optional",
-        "email": "Optional",
-        "practice_state": "Required",
-        "birthdate": "Required (YYYYMMDD)",
-        "ssn": "One required*",
-        "short_ssn": "Optional",
-        "dea": "One required*",
-        "upin": "One required*",
-        "type": "Required",
-        "tax_id": "Optional",
-        "npi": "One required*",
-        "license_state": "Required if license_number",
-        "license_number": "One required*"
-      },
-      "caqh_provider_id": "Required",
-      "po_provider_id": "Optional",
-      "last_recredential_date": "Optional (YYYYMMDD)",
-      "next_recredential_date": "Optional (YYYYMMDD)",
-      "delegation_flag": "Optional",
-      "application_type": "Conditional - see description",
-      "affiliation_flag": "Optional",
-      "organization_id": "Required",
-      "region_id": "Optional",
-      "anniversary_date": "string",
-      "exception_description": "string"
-    }
-  ]
+  "roster_result": null
 }
 
 ```
@@ -1079,4 +1160,45 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 |Name|Type|Required|Description|
 |---|--|--|-----|
 |*anonymous*|[[RosterUpdate](#schemarosterupdate)]|false|none|
+
+<h2 id="tocSrosterdelete">RosterDelete</h2>
+
+<a id="schemarosterdelete"></a>
+
+```json
+{
+  "organization_id": "string",
+  "caqh_provider_id": "string"
+}
+
+```
+
+*Delete Request*
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|organization_id|string|false|none|
+|caqh_provider_id|string|false|none|
+
+<h2 id="tocSrosterdeleterequest">RosterDeleteRequest</h2>
+
+<a id="schemarosterdeleterequest"></a>
+
+```json
+[
+  {
+    "organization_id": "string",
+    "caqh_provider_id": "string"
+  }
+]
+
+```
+
+### Properties
+
+|Name|Type|Required|Description|
+|---|--|--|-----|
+|*anonymous*|[[RosterDelete](#schemarosterdelete)]|false|none|
 

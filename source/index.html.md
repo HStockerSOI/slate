@@ -333,4 +333,11 @@ Each of these methods can be used to invoke a different functionality on the sam
 
 <aside> REST is <code>stateless</code> meaning that <b>nothing</b> is maintained from call to call.  The relevant data and authorization must be explicitly input into every call.</aside>
 
-#ProView®
+# Proview and DirectAssure
+
+The calls you will make to use the Roster API will take in a `product` parameter.  This product can be either ProView or DirectAssure.  The base URL will always be `https://proview.caqh.org`.
+
+| Product | Code |
+|---|---|
+| ProView | `PV` |
+| DirectAssure | `DA` |

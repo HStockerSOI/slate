@@ -1,4 +1,4 @@
-<h1 id="CAQH-ProView-StatusGet-CAQH-ProView-StatusGet">- Status Check Request [GET]</h1>
+<h1 id="CAQH-ProView-StatusGet-CAQH-ProView-StatusGet">Status Check Request [GET]</h1>
 
 <h2 id="CAQH-ProView-StatusGet-getting-started">Getting Started</h2>
 
@@ -23,7 +23,7 @@ params = { 'Product': product,  'Caqh_Provider_Id': caqh_provider_id,  'Organiza
 
 ```
 
-The status endpoint will take the Product of `PV`, CAQH Provider Id and the Organization Id that can both be found in the CAQH portal.  These should be passed in to the [parameters](#query-parameters) of the request.  The Status endpoint only accepts `GET` requests which will not contain a request body.
+The status endpoint will take your [product](#proview-and-directassure), CAQH Provider Id and the Organization Id that can both be found in the CAQH portal.  For this sample we have assumed you are using the ProView `PV` product.  These should be passed in to the [parameters](#query-parameters) of the request.  The Status endpoint only accepts `GET` requests which will not contain a request body.
 
 ## GET /ProviderStatus
 
@@ -31,7 +31,7 @@ A PO can request the status of a provider by submitting a call to the following 
 
 Parameter | Format | Max Size | Values | Status Check
 --------- | ------- | ---- | -------------------------- | -------
-Product | String | 2 | This field is your product.  It should be set to `PV`. | Required
+Product | String | 2 | This field is your product.  It should be set to `PV` or `DA`. | Required
 Caqh_Provider_Id | Integer | 10 | The field denotes the CAQH assigned provider Identifier. | Required
 Organization_ID | Integer | 5 | This field denotes Participating Organization Identifier. | Required
 
