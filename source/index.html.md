@@ -38,7 +38,6 @@ Make sure you have downloaded the most up-to-date SDK (Software Development Kit)
 
 ```python
 import pyodbc 
-
 #pass your connection string into the "connect" function
 cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
                       "Server=server_name;"
@@ -89,6 +88,51 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 
 ```
+```java
+/*
+Function to execute some SQL statement.
+Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
+You may also need to install a JDBC driver, info on that can be found at
+https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html
+*/
+public void sql() throws SQLException
+{
+    Connection conn = null;
+    Properties connectionProps = new Properties();
+    connectionProps.put("user", "username");
+    connectionProps.put("password", "password");
+    Statement stmt = null;
+    String query = "SELECT * FROM DirectoryRosterFile";
+    try
+    {
+        //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
+        //to see how to setup the DriverManager connection string
+        conn = DriverManager.getConnection(
+                "jdbc:" + "mysql" + "://" +
+                        "serverName" +
+                        ":" + "portNumber" + "/",
+                connectionProps);
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        //this will loop through each result, pull your data here
+        while (rs.next())
+        {
+            String provider = rs.getString("provider");
+            String organization_id = rs.getString("organization_id");
+            String application_type = rs.getString("application_type");
+            //do something with your data
+        }
+
+    } catch (Exception ex)
+    {
+        System.out.println(ex.getMessage());
+    } finally {
+        if (stmt != null)
+            stmt.close();
+    }
+}
+```
 In this code snippet we are querying data from a database and composing an object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
 
 You may choose to separate your data into multiple tables in your database, so update your query to reflect the necessary joins to retrieve all the relevant data.  In this case we have simplified the example so all the data is stored in a single table.  The SQL language we are using here is specific to SQL Server (Transact-SQL), so make sure you're aware of what SQL language your database uses and update it accordingly.
@@ -129,6 +173,14 @@ HttpClient client = new HttpClient();
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 ```
+```java
+//set up HTTP authentication header
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+//use the credential provider when creating your HttpClient
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+```
 A REST call will need to include headers to communicate meta-information about the call itself.  In the headers to the CAQH API, you will be passing in the content type of the message body (JSON) and your authorization.  See in the sidebar for how to best set up your headers in your language.
 
 CAQH uses a standard form of authorization where your credentials are sent in the form of
@@ -164,7 +216,17 @@ queryString["param2"] = "value2";
 url += queryString.ToString();
 //new url: https://proview-demo.caqh.org/api/endpoint?param1=value1&param2=value2
 ```
-
+```java
+//base url for api call
+ String url = "https://proview-demo.caqh.org/api/endpoint?";
+ List<NameValuePair> params = new ArrayList<NameValuePair>();
+ params.add(new BasicNameValuePair("param1", "value1"));
+ params.add(new BasicNameValuePair("param2", "value2"));
+ ...
+ //add params to base url
+ url += URLEncodedUtils.format(params, "UTF-8");
+ //new url: https://proview-demo.caqh.org/api/endpoint?param1=value1&param2=value2
+```
 `https://URL.url/api/endpoint` 
 
 with the query parameters `parameter1` and `parameter2`, you would format the URL as follows:
@@ -234,7 +296,55 @@ JArray bodyArray = new JArray(body);
 var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 ```
+```java
+//you may need to install this json package
+import javax.json.*;
+//create JSON object array (some API calls require the json body as an array even with one element)
+JsonArray body = Json.createArrayBuilder()
+  .add(Json.createObjectBuilder()
+  .add("provider", Json.createObjectBuilder()
+      .add("first_name", "")
+      .add("middle_name", "")
+      .add("last_name", "")
+      .add("name_suffix", "")
+      .add("gender", "")
+      .add("address1", "")
+      .add("address2", "")
+      .add("city", "")
+      .add("state", "")
+      .add("zip", "")
+      .add("zip_extn", "")
+      .add("phone", "")
+      .add("fax", "")
+      .add("email", "")
+      .add("practice_state", "")
+      .add("birthdate", "")
+      .add("ssn", "")
+      .add("short_ssn", "")
+      .add("dea", "")
+      .add("upin", "")
+      .add("type", "")
+      .add("tax_id", "")
+      .add("npi", "")
+      .add("license_state", "")
+      .add("license_number", ""))
+  .add("caqh_provider_id", "")
+  .add("po_provider_id", "")
+  .add("last_recredential_date", "")
+  .add("next_recredential_date", "")
+  .add("delegation_flag", "")
+  .add("application_type", "")
+  .add("affiliation_flag", "")
+  .add("organization_id", "")
+  .add("region_id", ""))
+  .build();
 
+//add body to request
+HttpPost request = new HttpPost(url);
+StringEntity bodyParams = new StringEntity(body.toString());
+request.addHeader("content-type", "application/json");
+request.setEntity(bodyParams);
+```
 The second way that information can be sent across is in the form of a body object attached to a `POST` call or `PUT` call.  The CAQH API will accept JSON objects in the body of POST calls.  You will be able to find the proper object in the documentation for the endpoint.  Not all fields on the body object will be required, so pay attention to the minimum required fields and their format.  The request body will always be JSON, however you may receive XML responses from the API, so pay attention to the documentation and what format the response is in.  
 
 In the code snippet we've put together a body object with the following fields:
@@ -319,6 +429,51 @@ var result = client.PostAsync(url, content).Result;
 string resultTxt = result.Content.ReadAsStringAsync().Result;
 dynamic obj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
 Console.WriteLine(obj.ToString());
+```
+```java
+//ensure you have both org.apache.http and javax.json libraries
+String url = "https://proview-demo.caqh.org/api/endpoint?";
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("param1", "value1"));
+params.add(new BasicNameValuePair("param2", "value2"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+//create JSON object array (some API calls require the json body as an array even with one element)
+JsonArray body = Json.createArrayBuilder()
+  .add(Json.createObjectBuilder()
+  .add("provider", Json.createObjectBuilder()
+      .add("first_name", "")
+      .add("middle_name", "")
+      ...
+      .add("license_number", ""))
+  .add("caqh_provider_id", "")
+  .add("po_provider_id", "")
+  ...
+  .add("region_id", ""))
+  .build();
+
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+
+try
+{
+    HttpPost request = new HttpPost(url);
+    StringEntity bodyParams = new StringEntity(body.toString());
+    request.addHeader("content-type", "application/json");
+    request.setEntity(bodyParams);
+    HttpResponse response = client.execute(request);
+
+    HttpEntity entity = response.getEntity();
+    String responseString = EntityUtils.toString(entity);
+    System.out.println(responseString);
+
+} catch (Exception ex)
+{
+    //handle errors here
+}
 ```
 An HTTP REST call sent to an API should use one of the following HTTP methods:
 

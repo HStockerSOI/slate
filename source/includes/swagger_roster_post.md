@@ -23,7 +23,28 @@ using Newtonsoft.Json.Linq;
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
 ```
+```java
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
 
+//base url
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+```
 A PO can request the status and results of a previous Add to Roster, Update on Roster, or Delete from Roster request by submitting the system-generated Batch ID in the following URL.
 
 | Method | URL |
@@ -45,10 +66,21 @@ params = {
 ```
 
 ```csharp
+
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["batch_id"] = "string";
+//add parameters to base url
 url += queryString.ToString();
+
+```
+
+```java
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("batch_id", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
 ```
 <h3 id="CAQH-ProView-RosterAPI-RosterGET-staging-data-parameter">Parameters</h3>
 
@@ -83,19 +115,52 @@ print(response.json())
 ```
 
 ```java
-URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster?batch_id=string");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("batch_id", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+//setup HTTP Auth
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+
+try
+{
+	    HttpGet request = new HttpGet(url);
+	    HttpResponse response = client.execute(request);
+
+	    HttpEntity entity = response.getEntity();
+    	String responseString = EntityUtils.toString(entity);
+    	JsonReader jsonReader = Json.createReader(new StringReader(responseString));
+    	JsonObject responseJson = jsonReader.readObject();
+    	jsonReader.close();
+
+} catch (Exception ex)
+{
+	    //handle errors here
 }
-in.close();
-System.out.println(response.toString());
 
 ```
 
@@ -206,6 +271,21 @@ if ((int)result.StatusCode == 200)
 }
 
 ```
+```java
+
+String batch_status = "";
+String batch_time = "";
+String roster_result = "";
+
+if (response.getStatusLine().getStatusCode() == 200)
+{
+	batch_status = responseJson.getString("batch_status");
+	batch_time = responseJson.getString("batch_time");
+	roster_result = responseJson.getString("roster_result");
+	
+}
+
+```
 
 ### See also:
 
@@ -237,7 +317,28 @@ using Newtonsoft.Json.Linq;
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
 ```
+```java
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
 
+//base url
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+```
 A PO can update one or more providers on the roster by submitting a call to the following URL. At least one of the fields with an asterisk (*) is required to process an Update. See 2.1.2 for the immediate system response.
 
 | Method | URL |
@@ -259,10 +360,21 @@ params = {
 ```
 
 ```csharp
+
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["product"] = "string";
+//add parameters to base url
 url += queryString.ToString();
+
+```
+
+```java
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
 ```
 <h3 id="CAQH-ProView-RosterAPI-RosterPUT-staging-data-parameter">Parameters</h3>
 
@@ -316,19 +428,36 @@ print(response.json())
 ```
 
 ```java
-URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster?product=string");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("PUT");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
-}
-in.close();
-System.out.println(response.toString());
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+//setup HTTP Auth
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
 
 ```
 
@@ -357,6 +486,24 @@ url += queryString.ToString();
 //set up HTTP auth (replace username/password with yours)
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+JObject body = new JObject(
+    new JProperty("organization_id", ""),
+    new JProperty("caqh_provider_id", ""),
+    new JProperty("po_provider_id", ""),
+    new JProperty("last_recredential_date", ""),
+    new JProperty("next_recredential_date", ""),
+    new JProperty("delegation_flag", ""),
+    new JProperty("application_type", ""),
+    new JProperty("affiliation_flag", ""));
+
+//Body is taken as an array, even with only one element
+JArray bodyArray = new JArray(body);
+var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
+content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+//Send the PUT Request
+var result = client.PutAsync(url, content).Result;
 
 //get the response message and parse it
 string resultTxt = result.Content.ReadAsStringAsync().Result;
@@ -430,6 +577,17 @@ if ((int)result.StatusCode == 200)
 }
 
 ```
+```java
+
+String batch_Id = "";
+
+if (response.getStatusLine().getStatusCode() == 200)
+{
+	batch_Id = responseJson.getString("batch_Id");
+	
+}
+
+```
 
 ### See also:
 
@@ -460,7 +618,28 @@ using Newtonsoft.Json.Linq;
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
 ```
+```java
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
 
+//base url
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+```
 A PO can add one or more providers to the roster by submitting a call to the following URL. Similar to the Add Roster File process, there are different required and optional fields for the Quick Add verses the Initial Add, and at least one of the fields with an asterisk (*) is required to process an Initial Add.
 
 | Method | URL |
@@ -482,10 +661,21 @@ params = {
 ```
 
 ```csharp
+
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["product"] = "PV";
+//add parameters to base url
 url += queryString.ToString();
+
+```
+
+```java
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "PV"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
 ```
 <h3 id="CAQH-ProView-RosterAPI-RosterPOST-staging-data-parameter">Parameters</h3>
 
@@ -521,19 +711,71 @@ print(response.json())
 ```
 
 ```java
-URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Roster?product=PV");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Roster?";
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "PV"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+//setup HTTP Auth
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+
+/* Body JSON Schema
+false
+*/
+//build JSON body (match schema above)
+//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in Java.
+JsonArray body = Json.createArrayBuilder()
+	.add(Json.createObjectBuilder()
+	.add("property_1", Json.createObjectBuilder()
+	    .add("subproperty_1", "")
+	    ...
+	    .add("subproperty_n", ""))
+	.add("property_2", "")
+	...
+	.add("property_n", ""))
+	.build();
+
+try
+{
+    HttpPost request = new HttpPost(url);
+    StringEntity bodyParams = new StringEntity(body.toString());
+    request.addHeader("content-type", "application/json");
+    request.setEntity(bodyParams);
+    HttpResponse response = client.execute(request);
+
+    HttpEntity entity = response.getEntity();
+    String responseString = EntityUtils.toString(entity);
+    JsonReader jsonReader = Json.createReader(new StringReader(responseString));
+    JsonObject responseJson = jsonReader.readObject();
+    jsonReader.close();
+
+} catch (Exception ex)
+{
+    //handle errors here
 }
-in.close();
-System.out.println(response.toString());
 
 ```
 
@@ -563,20 +805,45 @@ url += queryString.ToString();
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-//Body Schema
-/*
 false
-*/
-//Build JSON body (match above schema)
-//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in C#.
+
 JObject body = new JObject(
-new JProperty("property_1", new JObject(
-    new JProperty("subproperty_1", ""),
-    ...
-    new JProperty("subproperty_n", ""))),
-new JProperty("property_2", ""),
-...
-new JProperty("property_n", ""));
+new JProperty("provider", new JObject(
+    new JProperty("first_name", ""),
+    new JProperty("middle_name", ""),
+    new JProperty("last_name", ""),
+    new JProperty("name_suffix", ""),
+    new JProperty("gender", ""),
+    new JProperty("address1", ""),
+    new JProperty("address2", ""),
+    new JProperty("city", ""),
+    new JProperty("state", ""),
+    new JProperty("zip", ""),
+    new JProperty("zip_extn", ""),
+    new JProperty("phone", ""),
+    new JProperty("fax", ""),
+    new JProperty("email", ""),
+    new JProperty("practice_state", ""),
+    new JProperty("birthdate", ""),
+    new JProperty("ssn", ""),
+    new JProperty("short_ssn", ""),
+    new JProperty("dea", ""),
+    new JProperty("upin", ""),
+    new JProperty("type", ""),
+    new JProperty("tax_id", ""),
+    new JProperty("npi", ""),
+    new JProperty("license_state", ""),
+    new JProperty("license_number", ""))),
+new JProperty("caqh_provider_id", ""),
+new JProperty("po_provider_id", ""),
+new JProperty("last_recredential_date", ""),
+new JProperty("next_recredential_date", ""),
+new JProperty("delegation_flag", ""),
+new JProperty("application_type", ""),
+new JProperty("affiliation_flag", ""),
+new JProperty("organization_id", ""),
+new JProperty("region_id", ""));
+
 //Body is taken as an array, even with only one element
 JArray bodyArray = new JArray(body);
 var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
@@ -687,7 +954,33 @@ if ((int)result.StatusCode == 401)
 }
 
 ```
+```java
 
+String batch_Id = "";
+
+if (response.getStatusLine().getStatusCode() == 200)
+{
+	batch_Id = responseJson.getString("batch_Id");
+	
+}
+
+String Message = "";
+
+if (response.getStatusLine().getStatusCode() == 400)
+{
+	Message = responseJson.getString("Message");
+	
+}
+
+String Message = "";
+
+if (response.getStatusLine().getStatusCode() == 401)
+{
+	Message = responseJson.getString("Message");
+	
+}
+
+```
 You will receive a [batch id](#tocSaddresponse) which should be passed in to the [roster operation result](#todo) periodically to check if the operation has been processed.  
 
 ### See also:
@@ -719,7 +1012,28 @@ using Newtonsoft.Json.Linq;
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
 ```
+```java
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
 
+//base url
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
+```
 A PO can delete one or more providers from the roster by submitting a call to the following URL.
 
 | Method | URL |
@@ -739,10 +1053,15 @@ params = {
 ```
 
 ```csharp
-//setup query parameters
-var queryString = HttpUtility.ParseQueryString(string.Empty);
-";
-url += queryString.ToString();
+
+//This request does not require URL parameters
+
+```
+
+```java
+
+//This request does not require URL Parameters
+
 ```
 <h3 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data-parameter">Parameters</h3>
 
@@ -774,19 +1093,67 @@ print(response.json())
 ```
 
 ```java
-URL obj = new URL("https://proview-demo.caqh.org/RosterAPI/api/Deroster");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("POST");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+
+String url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
+
+//setup HTTP Auth
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+
+/* Body JSON Schema
+undefined
+*/
+//build JSON body (match schema above)
+//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in Java.
+JsonArray body = Json.createArrayBuilder()
+	.add(Json.createObjectBuilder()
+	.add("property_1", Json.createObjectBuilder()
+	    .add("subproperty_1", "")
+	    ...
+	    .add("subproperty_n", ""))
+	.add("property_2", "")
+	...
+	.add("property_n", ""))
+	.build();
+
+try
+{
+    HttpPost request = new HttpPost(url);
+    StringEntity bodyParams = new StringEntity(body.toString());
+    request.addHeader("content-type", "application/json");
+    request.setEntity(bodyParams);
+    HttpResponse response = client.execute(request);
+
+    HttpEntity entity = response.getEntity();
+    String responseString = EntityUtils.toString(entity);
+    JsonReader jsonReader = Json.createReader(new StringReader(responseString));
+    JsonObject responseJson = jsonReader.readObject();
+    jsonReader.close();
+
+} catch (Exception ex)
+{
+    //handle errors here
 }
-in.close();
-System.out.println(response.toString());
 
 ```
 
@@ -810,20 +1177,45 @@ string url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-//Body Schema
-/*
 undefined
-*/
-//Build JSON body (match above schema)
-//Refer to Anatomy of a REST Call/Request Body to see code on composing a specific JSON structure in C#.
+
 JObject body = new JObject(
-new JProperty("property_1", new JObject(
-    new JProperty("subproperty_1", ""),
-    ...
-    new JProperty("subproperty_n", ""))),
-new JProperty("property_2", ""),
-...
-new JProperty("property_n", ""));
+new JProperty("provider", new JObject(
+    new JProperty("first_name", ""),
+    new JProperty("middle_name", ""),
+    new JProperty("last_name", ""),
+    new JProperty("name_suffix", ""),
+    new JProperty("gender", ""),
+    new JProperty("address1", ""),
+    new JProperty("address2", ""),
+    new JProperty("city", ""),
+    new JProperty("state", ""),
+    new JProperty("zip", ""),
+    new JProperty("zip_extn", ""),
+    new JProperty("phone", ""),
+    new JProperty("fax", ""),
+    new JProperty("email", ""),
+    new JProperty("practice_state", ""),
+    new JProperty("birthdate", ""),
+    new JProperty("ssn", ""),
+    new JProperty("short_ssn", ""),
+    new JProperty("dea", ""),
+    new JProperty("upin", ""),
+    new JProperty("type", ""),
+    new JProperty("tax_id", ""),
+    new JProperty("npi", ""),
+    new JProperty("license_state", ""),
+    new JProperty("license_number", ""))),
+new JProperty("caqh_provider_id", ""),
+new JProperty("po_provider_id", ""),
+new JProperty("last_recredential_date", ""),
+new JProperty("next_recredential_date", ""),
+new JProperty("delegation_flag", ""),
+new JProperty("application_type", ""),
+new JProperty("affiliation_flag", ""),
+new JProperty("organization_id", ""),
+new JProperty("region_id", ""));
+
 //Body is taken as an array, even with only one element
 JArray bodyArray = new JArray(body);
 var content = new StringContent(bodyArray.ToString(), Encoding.UTF8, "application/json");
@@ -893,6 +1285,17 @@ string batch_Id = "";
 if ((int)result.StatusCode == 200)
 {
 	batch_Id = responseObj.batch_Id;
+	
+}
+
+```
+```java
+
+String batch_Id = "";
+
+if (response.getStatusLine().getStatusCode() == 200)
+{
+	batch_Id = responseJson.getString("batch_Id");
 	
 }
 
