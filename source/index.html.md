@@ -335,7 +335,9 @@ Each of these methods can be used to invoke a different functionality on the sam
 
 # Proview and DirectAssure
 
-The calls you will make to use the Roster API will take in a `product` parameter.  This product can be either ProView or DirectAssure.  The base URL will always be `https://proview.caqh.org`.
+Many of the calls you will make to the APIs will take in a `product` parameter.  This product can be either ProView or DirectAssure. Be sure to know which product line you are using and input the proper value into the product parameter. 
+
+The base URL will always be `https://proview.caqh.org`.
 
 | Product | Code |
 |---|---|
