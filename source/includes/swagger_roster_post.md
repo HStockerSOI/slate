@@ -386,7 +386,7 @@ url += URLEncodedUtils.format(params, "UTF-8");
 
 <h2 id="CAQH-ProView-RosterAPI-RosterPUT-api-definition"> PUT /Roster</h2>
 
-The Roster Operation Result will take a `batch_id` in its parameters.  This batch id will have been returned to you by a successful `POST`, `PUT` or `DELETE`.  A `GET` call cannot have a request body.
+The Update Roster Request takes in an Update Roster object containing a subset of the Roster fields which can be updated.  Keep in mind that this update endpoint takes an array and will reject a request sending a single update object.
 
 <h2 id="CAQH-ProView-RosterAPI-RosterPUT-making-request">Making The Request</h2>
 
@@ -546,7 +546,11 @@ Console.WriteLine(responseObj.ToString());
 }
 ```
 
-Responses
+If your request has been formatted correctly, it will return a batch id and a 200 response code.  If not, the response object will have a "Message" field that will contain the error.  
+
+* 200 Success
+* 401 Unauthorized
+* 400 Bad Request
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
@@ -805,8 +809,6 @@ url += queryString.ToString();
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-false
-
 JObject body = new JObject(
 new JProperty("provider", new JObject(
     new JProperty("first_name", ""),
@@ -964,6 +966,7 @@ if (response.getStatusLine().getStatusCode() == 200)
 	
 }
 
+
 String Message = "";
 
 if (response.getStatusLine().getStatusCode() == 400)
@@ -1047,27 +1050,34 @@ A PO can delete one or more providers from the roster by submitting a call to th
   If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
 
 ```python
+product = 'string'
 
 params = {
+  "product": product
 }
 ```
 
 ```csharp
-
-//This request does not require URL parameters
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["product"] = "string";
+//add parameters to base url
+url += queryString.ToString();
 
 ```
 
 ```java
-
-//This request does not require URL Parameters
-
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
 ```
 <h3 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data-parameter">Parameters</h3>
 
   The data should be passed in to the [parameters](#query-parameters) of the request.
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-api-definition"> POST /Deroster</h2>
+
+The deroster endpoint will take in an array of objects containing the Organization ID and the CAQH Provider ID.  You will be returned a Batch Id which should be passed into the Roster Result endpoint.
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-making-request">Making The Request</h2>
 
@@ -1081,6 +1091,7 @@ headers = {
 }
 
 params = {
+  "product": 'string'
 }
 
 username = "yourUsername"
@@ -1113,6 +1124,10 @@ import java.util.ArrayList;
 
 String url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
 
+
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("product", "string"));
+url += URLEncodedUtils.format(params, "UTF-8");
 //setup HTTP Auth
 CredentialsProvider provider = new BasicCredentialsProvider();
 UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
@@ -1173,11 +1188,15 @@ HttpClient client = new HttpClient();
 //base url
 string url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
 
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["product"] = "string";
+//add parameters to base url
+url += queryString.ToString();
+
 //set up HTTP auth (replace username/password with yours)
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
-undefined
 
 JObject body = new JObject(
 new JProperty("provider", new JObject(
@@ -1237,6 +1256,7 @@ Console.WriteLine(responseObj.ToString());
 
 |Parameter|Type|Required|Description|
 |---|---|---|---|
+|product|query|string|true|none|
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-responses">Responses</h2>
 
@@ -1258,7 +1278,7 @@ Console.WriteLine(responseObj.ToString());
 }
 ```
 
-Batch Id
+If your request has been formatted correctly, it will return a batch id and a 200 response code.  If not, the response object will have a "Message" field that will contain the error.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
