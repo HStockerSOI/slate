@@ -966,6 +966,7 @@ if (response.getStatusLine().getStatusCode() == 200)
 	
 }
 
+
 String Message = "";
 
 if (response.getStatusLine().getStatusCode() == 400)
@@ -1057,7 +1058,6 @@ params = {
 ```
 
 ```csharp
-
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
 queryString["product"] = "string";
@@ -1067,11 +1067,9 @@ url += queryString.ToString();
 ```
 
 ```java
-
 List<NameValuePair> params = new ArrayList<NameValuePair>();
 params.add(new BasicNameValuePair("product", "string"));
 url += URLEncodedUtils.format(params, "UTF-8");
-
 ```
 <h3 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data-parameter">Parameters</h3>
 
@@ -1126,10 +1124,10 @@ import java.util.ArrayList;
 
 String url = "https://proview-demo.caqh.org/RosterAPI/api/Deroster?";
 
+
 List<NameValuePair> params = new ArrayList<NameValuePair>();
 params.add(new BasicNameValuePair("product", "string"));
 url += URLEncodedUtils.format(params, "UTF-8");
-
 //setup HTTP Auth
 CredentialsProvider provider = new BasicCredentialsProvider();
 UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
