@@ -8,6 +8,8 @@ language_tabs: # must be one of https://git.io/vQNgJ
 includes:
   - swagger_status_get
   - swagger_roster_post
+  - DA_Title
+  - DA_Input
 toc_footers: []
 search: true
 headingLevel: 2
@@ -34,9 +36,10 @@ Interacting with the CAQH API will often require several REST calls to be made i
 
 Make sure you have downloaded the most up-to-date SDK (Software Development Kit) and an IDE (Integrated Development Environment) for your language of choice.  You should be familiar with the syntax and have a basic knowledge of your language and how software normally communicates with APIs (Application Programming Interface).  If you have no experience with any of the languages, we suggest you familiarize yourself with the basics and then return to this documentation.
 
-# Loading and Parsing Data
+# Roster File From Database
 
 ```python
+
 import pyodbc 
 
 #pass your connection string into the "connect" function
@@ -61,6 +64,217 @@ for row in cursor:
 	
 	#add the roster object to the data array
 	data.append(roster)
+	
+```
+
+```csharp
+
+using System;
+using System.Data.SqlClient;
+using System.Linq;
+
+namespace SQLQueryRunner
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //You may need to use NuGet to install System.Data.SqlClient
+            //replace with your connection string and query
+            string connectionString = "Server=(LocalDB)\\Instance;Database=testdb;Trusted_Connection=True;";
+            string queryString = "SELECT * FROM DirectoryRosterFile";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        //once you have your data, refer to Anatomy of a Rest Call/Request Body to see how to populate your request with it
+                        //reader[0], reader[1], etc. will have query results
+                        Console.WriteLine(reader[0]);
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+        }
+    }
+}
+
+```
+
+```java
+
+import java.sql.*;
+import java.util.Properties;
+
+public class SQLDBConnect {
+
+    /*
+     Runner for sample MySQL connection and query. You will need to add mysql-connector-java-8.0.12.jar to the project
+     from: https://dev.mysql.com/downloads/connector/j/5.1.html (Your version of the JAR can be different).
+     This example connects to the sample database world in MySQL.
+     */
+    public static void main(String[] args) {
+        String query = "SELECT * FROM DirectoryRosterFile";
+        try
+        {
+            sql(query);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    /*
+    Function to execute some SQL statement.
+    Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+    and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
+    */
+    public static void sql(String query) throws SQLException {
+
+        try {
+            //create connection and statement objects
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = null;
+            Statement stmt = null;
+
+            //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
+            //to see how to setup the DriverManager connection string
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "user", "password");
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+            //this will loop through each result, pull your data here
+            while (rs.next()) {
+                //walk through each column
+                int numCols = rs.getMetaData().getColumnCount();
+                for (int i = 1; i <= numCols; i++)
+                {
+                    System.out.print(rs.getObject(i));
+                    System.out.print(" ");
+                }
+                System.out.print("\n");
+            }
+            //always close when finished
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+}
+
+
+```
+
+In this code snippet we are querying data from a database and composing a Roster object from the data rows.  You may choose to use an ORM, Object Relational Mapper (such as Entity Framework), in which case you will want to research into their recommended implementation.  This data will be passed into your REST calls to the Roster API in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
+
+Please see the [Rostering](#rostering) section for how to insert, update and delete roster objects.
+
+| Data Object | Description |
+| ----------- | --- |
+| [Roster File](#tocSpractice_location) | The ProView Roster API accepts one or more providers at a time to roster, update, or delete the provider from the Participating Organization Roster. |
+
+# Input File From Database
+
+```python
+
+import pyodbc 
+
+#pass your connection string into the "connect" function
+cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
+                      "Server=server_name;"
+                      "Database=db_name;"
+                      "Trusted_Connection=yes;")
+
+
+cursor = cnxn.cursor()
+cursor.execute('SELECT * FROM DirectoryRosterFile')
+
+data = []
+
+for row in cursor:
+    roster = {}
+	
+	roster["provider"] = row.provider
+	roster["organization_id"] = row.organization_id
+	roster["application_type"] = row.application_type
+	#continue for all other applicable fields
+	
+	#add the roster object to the data array
+	data.append(roster)
+```
+
+```java
+
+import java.sql.*;
+import java.util.Properties;
+
+public class SQLDBConnect {
+
+    /*
+     Runner for sample MySQL connection and query. You will need to add mysql-connector-java-8.0.12.jar to the project
+     from: https://dev.mysql.com/downloads/connector/j/5.1.html (Your version of the JAR can be different).
+     This example connects to the sample database world in MySQL.
+     */
+    public static void main(String[] args) {
+        String query = "SELECT * FROM DirectoryRosterFile";
+        try
+        {
+            sql(query);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    /*
+    Function to execute some SQL statement.
+    Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+    and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
+    */
+    public static void sql(String query) throws SQLException {
+
+        try {
+            //create connection and statement objects
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = null;
+            Statement stmt = null;
+
+            //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
+            //to see how to setup the DriverManager connection string
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "user", "password");
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+            //this will loop through each result, pull your data here
+            while (rs.next()) {
+                //walk through each column
+                int numCols = rs.getMetaData().getColumnCount();
+                for (int i = 1; i <= numCols; i++)
+                {
+                    System.out.print(rs.getObject(i));
+                    System.out.print(" ");
+                }
+                System.out.print("\n");
+            }
+            //always close when finished
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+}
+
+
 ```
 
 ```csharp
@@ -89,13 +303,16 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 
 ```
-In this code snippet we are querying data from a database and composing an object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
+
+In this code snippet we are querying data from a database and composing an Input file object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
 
 You may choose to separate your data into multiple tables in your database, so update your query to reflect the necessary joins to retrieve all the relevant data.  In this case we have simplified the example so all the data is stored in a single table.  The SQL language we are using here is specific to SQL Server (Transact-SQL), so make sure you're aware of what SQL language your database uses and update it accordingly.
 
-This data will be passed into your REST calls in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
+This data will be passed into your REST calls to the Roster API in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
 
-<aside>Use the command <code>pip install pyodbc</code> to install the <code>pyodbc</code> library necessary for this snippet.</aside>
+| Data Object | Description |
+| ----------- | --- |
+| [Input File](#tocSpractice_location) | DirectAssure 2.0 allows providers to confirm their practice locations to the plan-specific practice location information. This requires information from the health plan on the practice locations for each provider. |
 
 # Anatomy of a REST Call
 
@@ -123,12 +340,14 @@ headers = {
 username = "yourUsername"
 password = "yourPassword"
 ```
+
 ```csharp
 //set up HTTP authentication header
 HttpClient client = new HttpClient();
 var byteArray = Encoding.ASCII.GetBytes("username:password");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 ```
+
 A REST call will need to include headers to communicate meta-information about the call itself.  In the headers to the CAQH API, you will be passing in the content type of the message body (JSON) and your authorization.  See in the sidebar for how to best set up your headers in your language.
 
 CAQH uses a standard form of authorization where your credentials are sent in the form of
@@ -343,3 +562,5 @@ The base URL will always be `https://proview.caqh.org`.
 |---|---|
 | ProView | `PV` |
 | DirectAssure | `DA` |
+
+# Rostering

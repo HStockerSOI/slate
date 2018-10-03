@@ -1,6 +1,6 @@
 
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIGETintro">Get Roster Result [GET]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIGETintro"> - Get Roster Result [GET]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-RosterGET-getting-started">Getting Started</h2>
 
@@ -293,7 +293,7 @@ if (response.getStatusLine().getStatusCode() == 200)
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPUTintro">Update Roster Request [PUT]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPUTintro"> - Update Roster Request [PUT]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-RosterPUT-getting-started">Getting Started</h2>
 
@@ -599,7 +599,7 @@ if (response.getStatusLine().getStatusCode() == 200)
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro">Add Roster Request [POST]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro"> - Add Roster Request [POST]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-RosterPOST-getting-started">Getting Started</h2>
 
@@ -991,7 +991,7 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro">Roster Delete Request [DELETE]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro"> - Roster Delete Request [DELETE]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-getting-started">Getting Started</h2>
 

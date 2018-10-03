@@ -1,4 +1,4 @@
-<h1 id="CAQH-ProView-StatusGet-CAQH-ProView-StatusGet">Status Check Request [GET]</h1>
+<h1 id="CAQH-ProView-StatusGet-CAQH-ProView-StatusGet"> - Status Check Request [GET]</h1>
 
 <h2 id="CAQH-ProView-StatusGet-getting-started">Getting Started</h2>
 
