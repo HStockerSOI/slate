@@ -92,9 +92,50 @@ namespace SQLQueryRunner
                 {
                     while (reader.Read())
                     {
-                        //once you have your data, refer to Anatomy of a Rest Call/Request Body to see how to populate your request with it
-                        //reader[0], reader[1], etc. will have query results
-                        Console.WriteLine(reader[0]);
+                        //populate new JSON
+                        body = new JObject(
+                            new JProperty("tax_id", reader.GetString("tax_id")),
+                            new JProperty("practice_name", reader.GetString("practice_name")),
+                            new JProperty("practice_location_address1", reader.GetString("practice_location_address1")),
+                            new JProperty("practice_location_address2", reader.GetString("practice_location_address2")),
+                            new JProperty("practice_location_city", reader.GetString("practice_location_city")),
+                            new JProperty("practice_location_state", reader.GetString("practice_location_state")),
+                            new JProperty("practice_location_zipcode", reader.GetString("practice_location_zipcode")),
+                            new JProperty("practice_location_province", reader.GetString("practice_location_province")),
+                            new JProperty("practice_location_country", reader.GetString("practice_location_country")),
+                            new JProperty("npi_type_2", reader.GetString("npi_type_2")),
+                            new JProperty("po_location_id", reader.GetString("po_location_id")),
+                            new JProperty("location_type", reader.GetString("location_type")),
+                            new JProperty("providers", new JArray(
+                                new JObject(
+                                    new JProperty("caqh_provider_id", reader.GetString("caqh_provider_id")),
+                                    new JProperty("po_provider_id", reader.GetString("po_provider_id")),
+                                    new JProperty("provider_type", reader.GetString("provider_type")),
+                                    new JProperty("provider_primary_practice_state", reader.GetString("provider_primary_practice_state")),
+                                    new JProperty("provider_first_name", reader.GetString("provider_first_name")),
+                                    new JProperty("provider_middle_name", reader.GetString("provider_middle_name")),
+                                    new JProperty("provider_last_name", reader.GetString("provider_last_name")),
+                                    new JProperty("npi_type_1", reader.GetString("npi_type_1")),
+                                    new JProperty("po_provider_location_id", reader.GetString("po_provider_location_id")),
+                                    new JProperty("provider_dea", new JArray(
+                                        new JObject(
+                                        new JProperty("dea_number", reader.GetString("dea_number")),
+                                        new JProperty("dea_state", reader.GetString("dea_state"))
+                                    ))),
+                                    new JProperty("provider_license", new JArray(
+                                        new JObject(
+                                        new JProperty("license_number", reader.GetString("license_number")),
+                                        new JProperty("license_state", reader.GetString("license_state")),
+                                        new JProperty("license_expiration_date", reader.GetString("license_expiration_date"))
+                                    ))),
+                                    new JProperty("provider_practice_specialty", new JArray(
+                                        new JObject(
+                                        new JProperty("specialty_name", reader.GetString("specialty_name")),
+                                        new JProperty("specialty_taxonomy_code", reader.GetString("specialty_taxonomy_code")),
+                                        new JProperty("specialty_type", reader.GetString("specialty_type")))))
+                                )))
+                        );
+
                     }
                 }
                 finally
@@ -152,13 +193,55 @@ public class SQLDBConnect {
             //this will loop through each result, pull your data here
             while (rs.next()) {
                 //walk through each column
-                int numCols = rs.getMetaData().getColumnCount();
-                for (int i = 1; i <= numCols; i++)
-                {
-                    System.out.print(rs.getObject(i));
-                    System.out.print(" ");
-                }
-                System.out.print("\n");
+                JsonObject body = Json.createObjectBuilder()
+                   .add("tax_id", "")
+                   .add("practice_name", "")
+                   .add("practice_location_address1", "")
+                   .add("practice_location_address2", "")
+                   .add("practice_location_city", "")
+                   .add("practice_location_state", "")
+                   .add("practice_location_zipcode", "")
+                   .add("practice_location_province", "")
+                   .add("practice_location_country", "")
+                   .add("npi_type_2", "")
+                   .add("po_location_id", "")
+                   .add("location_type", "")
+                   .add("providers", Json.createArrayBuilder()
+                        .add(Json.createObjectBuilder()
+                            .add("caqh_provider_id", "")
+                            .add("po_provider_id", "")
+                            .add("provider_type", "")
+                            .add("provider_primary_practice_state", "")
+                            .add("provider_first_name", "")
+                            .add("provider_middle_name", "")
+                            .add("provider_last_name", "")
+                            .add("npi_type_1", "")
+                            .add("po_provider_location_id", "")
+                            .add("provider_dea", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("dea_number", "")
+                                    .add("dea_state", "")
+                                )
+                            )
+                            .add("provider_license", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("license_number", "")
+                                    .add("license_state", "")
+                                    .add("license_expiration_date", "")
+                                )
+                            )
+                            .add("provider_practice_specialty", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("specialty_name", "")
+                                    .add("specialty_taxonomy_code", "")
+                                    .add("specialty_type", "")
+                                )
+                            )
+                        )
+                   )
+
+                   .build();
+
             }
             //always close when finished
             stmt.close();
