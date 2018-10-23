@@ -277,7 +277,7 @@ This operation does not require authentication
 
 content = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	content = response.json()["content"]
 	
 

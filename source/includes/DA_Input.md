@@ -411,49 +411,49 @@ You will want to refer to the [Generating a Batch Id](#generating-a-batch-id) se
 
 message = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	message = response.json()["message"]
 	
 
 error = ""
 
-if(response.status_Code == 400):
+if(response.status_code == 400):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 401):
+if(response.status_code == 401):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 402):
+if(response.status_code == 402):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 420):
+if(response.status_code == 420):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 421):
+if(response.status_code == 421):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 422):
+if(response.status_code == 422):
 	error = response.json()["error"]
 	
 
 error = ""
 
-if(response.status_Code == 500):
+if(response.status_code == 500):
 	error = response.json()["error"]
 	
 
@@ -818,13 +818,13 @@ Console.WriteLine(responseObj.ToString());
 
 message = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	message = response.json()["message"]
 	
 
 message = ""
 
-if(response.status_Code == 201):
+if(response.status_code == 201):
 	message = response.json()["message"]
 	
 
@@ -1095,13 +1095,13 @@ A 200 response returns the exception report in JSON format
 
 message = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	message = response.json()["message"]
 	
 
 message = ""
 
-if(response.status_Code == 201):
+if(response.status_code == 201):
 	message = response.json()["message"]
 	
 
@@ -1407,7 +1407,7 @@ extract_version = ""
 organization_id = ""
 providers = {}
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	extract_request_end_date = response.json()["extract_request_end_date"]
 	extract_request_start_date = response.json()["extract_request_start_date"]
 	extract_timestamp = response.json()["extract_timestamp"]
@@ -1418,7 +1418,7 @@ if(response.status_Code == 200):
 
 message = ""
 
-if(response.status_Code == 294):
+if(response.status_code == 294):
 	message = response.json()["message"]
 	
 

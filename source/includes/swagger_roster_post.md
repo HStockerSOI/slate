@@ -248,7 +248,7 @@ batch_status = ""
 batch_time = ""
 roster_result = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	batch_status = response.json()["batch_status"]
 	batch_time = response.json()["batch_time"]
 	roster_result = response.json()["roster_result"]
@@ -595,7 +595,7 @@ If your request has been formatted correctly, it will return a batch id and a 20
 
 batch_Id = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	batch_Id = response.json()["batch_Id"]
 	
 
@@ -965,19 +965,19 @@ If your request has been formatted correctly, it will return a batch id and a 20
 
 batch_Id = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	batch_Id = response.json()["batch_Id"]
 	
 
 Message = ""
 
-if(response.status_Code == 400):
+if(response.status_code == 400):
 	Message = response.json()["Message"]
 	
 
 Message = ""
 
-if(response.status_Code == 401):
+if(response.status_code == 401):
 	Message = response.json()["Message"]
 	
 
@@ -1045,7 +1045,7 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 * [Delete Roster](#todo)
 * [Roster Quick Add](#todo)
 
-<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-RosterAPIPOSTintro"> - Roster Delete Request [PUT]</h1>
+<h1 id="CAQH-ProView-RosterAPI-CAQH-ProView-deRosterAPIPOSTintro"> - Roster Delete Request [PUT]</h1>
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-getting-started">Getting Started</h2>
 
@@ -1371,7 +1371,7 @@ If your request has been formatted correctly, it will return a batch id and a 20
 
 batch_Id = ""
 
-if(response.status_Code == 200):
+if(response.status_code == 200):
 	batch_Id = response.json()["batch_Id"]
 	
 
