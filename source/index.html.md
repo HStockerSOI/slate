@@ -8,6 +8,8 @@ language_tabs: # must be one of https://git.io/vQNgJ
 includes:
   - swagger_status_get
   - swagger_roster_post
+  - PV_Title
+  - PV_Input
   - DA_Title
   - DA_Input
 toc_footers: []
@@ -36,410 +38,66 @@ Interacting with the CAQH API will often require several REST calls to be made i
 
 Make sure you have downloaded the most up-to-date SDK (Software Development Kit) and an IDE (Integrated Development Environment) for your language of choice.  You should be familiar with the syntax and have a basic knowledge of your language and how software normally communicates with APIs (Application Programming Interface).  If you have no experience with any of the languages, we suggest you familiarize yourself with the basics and then return to this documentation.
 
-# Roster File From Database
+This document is intended for business and technical teams (data stewards, developers, operational and technical staff etc.) at the Participating Organizations involved in the exchange of data between CAQH DirectAssure and their internal systems.
 
-```python
+# Constructing JSON
 
-import pyodbc 
-#pass your connection string into the "connect" function
-cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
-                      "Server=server_name;"
-                      "Database=db_name;"
-                      "Trusted_Connection=yes;")
-
-
-cursor = cnxn.cursor()
-cursor.execute('SELECT * FROM DirectoryRosterFile')
-
-data = []
-
-for row in cursor:
-    roster = {}
-	
-	roster["provider"] = row.provider
-	roster["organization_id"] = row.organization_id
-	roster["application_type"] = row.application_type
-	#continue for all other applicable fields
-	
-	#add the roster object to the data array
-	data.append(roster)
-	
-```
-
-```csharp
-
-using System;
-using System.Data.SqlClient;
-using System.Linq;
-
-namespace SQLQueryRunner
+```json
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            //You may need to use NuGet to install System.Data.SqlClient
-            //replace with your connection string and query
-            string connectionString = "Server=(LocalDB)\\Instance;Database=testdb;Trusted_Connection=True;";
-            string queryString = "SELECT * FROM DirectoryRosterFile";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                try
-                {
-                    while (reader.Read())
-                    {
-                        //populate new JSON
-                        body = new JObject(
-                            new JProperty("tax_id", reader.GetString("tax_id")),
-                            new JProperty("practice_name", reader.GetString("practice_name")),
-                            new JProperty("practice_location_address1", reader.GetString("practice_location_address1")),
-                            new JProperty("practice_location_address2", reader.GetString("practice_location_address2")),
-                            new JProperty("practice_location_city", reader.GetString("practice_location_city")),
-                            new JProperty("practice_location_state", reader.GetString("practice_location_state")),
-                            new JProperty("practice_location_zipcode", reader.GetString("practice_location_zipcode")),
-                            new JProperty("practice_location_province", reader.GetString("practice_location_province")),
-                            new JProperty("practice_location_country", reader.GetString("practice_location_country")),
-                            new JProperty("npi_type_2", reader.GetString("npi_type_2")),
-                            new JProperty("po_location_id", reader.GetString("po_location_id")),
-                            new JProperty("location_type", reader.GetString("location_type")),
-                            new JProperty("providers", new JArray(
-                                new JObject(
-                                    new JProperty("caqh_provider_id", reader.GetString("caqh_provider_id")),
-                                    new JProperty("po_provider_id", reader.GetString("po_provider_id")),
-                                    new JProperty("provider_type", reader.GetString("provider_type")),
-                                    new JProperty("provider_primary_practice_state", reader.GetString("provider_primary_practice_state")),
-                                    new JProperty("provider_first_name", reader.GetString("provider_first_name")),
-                                    new JProperty("provider_middle_name", reader.GetString("provider_middle_name")),
-                                    new JProperty("provider_last_name", reader.GetString("provider_last_name")),
-                                    new JProperty("npi_type_1", reader.GetString("npi_type_1")),
-                                    new JProperty("po_provider_location_id", reader.GetString("po_provider_location_id")),
-                                    new JProperty("provider_dea", new JArray(
-                                        new JObject(
-                                        new JProperty("dea_number", reader.GetString("dea_number")),
-                                        new JProperty("dea_state", reader.GetString("dea_state"))
-                                    ))),
-                                    new JProperty("provider_license", new JArray(
-                                        new JObject(
-                                        new JProperty("license_number", reader.GetString("license_number")),
-                                        new JProperty("license_state", reader.GetString("license_state")),
-                                        new JProperty("license_expiration_date", reader.GetString("license_expiration_date"))
-                                    ))),
-                                    new JProperty("provider_practice_specialty", new JArray(
-                                        new JObject(
-                                        new JProperty("specialty_name", reader.GetString("specialty_name")),
-                                        new JProperty("specialty_taxonomy_code", reader.GetString("specialty_taxonomy_code")),
-                                        new JProperty("specialty_type", reader.GetString("specialty_type")))))
-                                )))
-                        );
-
-                    }
-                }
-                finally
-                {
-                    reader.Close();
-                }
-            }
-        }
-    }
+	"property": "value",
+	"array": [1,2,3],
+	"object":
+	{
+		"property": "value",
+		"property2": 2
+	}
 }
-
 ```
-
-```java
-
-import java.sql.*;
-import java.util.Properties;
-
-public class SQLDBConnect {
-
-    /*
-     Runner for sample MySQL connection and query. You will need to add mysql-connector-java-8.0.12.jar to the project
-     from: https://dev.mysql.com/downloads/connector/j/5.1.html (Your version of the JAR can be different).
-     This example connects to the sample database world in MySQL.
-     */
-    public static void main(String[] args) {
-        String query = "SELECT * FROM DirectoryRosterFile";
-        try
-        {
-            sql(query);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    /*
-    Function to execute some SQL statement.
-    Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
-    and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
-    */
-    public static void sql(String query) throws SQLException {
-
-        try {
-            //create connection and statement objects
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = null;
-            Statement stmt = null;
-
-            //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
-            //to see how to setup the DriverManager connection string
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "user", "password");
-            stmt = conn.createStatement();
-
-            ResultSet rs = stmt.executeQuery(query);
-            //this will loop through each result, pull your data here
-            while (rs.next()) {
-                //walk through each column
-                JsonObject body = Json.createObjectBuilder()
-                   .add("tax_id", "")
-                   .add("practice_name", "")
-                   .add("practice_location_address1", "")
-                   .add("practice_location_address2", "")
-                   .add("practice_location_city", "")
-                   .add("practice_location_state", "")
-                   .add("practice_location_zipcode", "")
-                   .add("practice_location_province", "")
-                   .add("practice_location_country", "")
-                   .add("npi_type_2", "")
-                   .add("po_location_id", "")
-                   .add("location_type", "")
-                   .add("providers", Json.createArrayBuilder()
-                        .add(Json.createObjectBuilder()
-                            .add("caqh_provider_id", "")
-                            .add("po_provider_id", "")
-                            .add("provider_type", "")
-                            .add("provider_primary_practice_state", "")
-                            .add("provider_first_name", "")
-                            .add("provider_middle_name", "")
-                            .add("provider_last_name", "")
-                            .add("npi_type_1", "")
-                            .add("po_provider_location_id", "")
-                            .add("provider_dea", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
-                                    .add("dea_number", "")
-                                    .add("dea_state", "")
-                                )
-                            )
-                            .add("provider_license", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
-                                    .add("license_number", "")
-                                    .add("license_state", "")
-                                    .add("license_expiration_date", "")
-                                )
-                            )
-                            .add("provider_practice_specialty", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
-                                    .add("specialty_name", "")
-                                    .add("specialty_taxonomy_code", "")
-                                    .add("specialty_type", "")
-                                )
-                            )
-                        )
-                   )
-
-                   .build();
-
-            }
-            //always close when finished
-            stmt.close();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-}
-
-
-```
-
-In this code snippet we are querying data from a database and composing a Roster object from the data rows.  You may choose to use an ORM, Object Relational Mapper (such as Entity Framework), in which case you will want to research into their recommended implementation.  This data will be passed into your REST calls to the Roster API in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
-
-Please see the [Rostering](#rostering) section for how to insert, update and delete roster objects.
-
-| Data Object | Description |
-| ----------- | --- |
-| [Roster File](#tocSpractice_location) | The ProView Roster API accepts one or more providers at a time to roster, update, or delete the provider from the Participating Organization Roster. |
-
-# Input File From Database
 
 ```python
-
-import pyodbc 
-
-#pass your connection string into the "connect" function
-cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
-                      "Server=server_name;"
-                      "Database=db_name;"
-                      "Trusted_Connection=yes;")
-
-
-cursor = cnxn.cursor()
-cursor.execute('SELECT * FROM DirectoryRosterFile')
-
-data = []
-
-for row in cursor:
-    roster = {}
-	
-	roster["provider"] = row.provider
-	roster["organization_id"] = row.organization_id
-	roster["application_type"] = row.application_type
-	#continue for all other applicable fields
-	
-	#add the roster object to the data array
-	data.append(roster)
-```
-
-```java
-
-import java.sql.*;
-import java.util.Properties;
-
-public class SQLDBConnect {
-
-    /*
-     Runner for sample MySQL connection and query. You will need to add mysql-connector-java-8.0.12.jar to the project
-     from: https://dev.mysql.com/downloads/connector/j/5.1.html (Your version of the JAR can be different).
-     This example connects to the sample database world in MySQL.
-     */
-    public static void main(String[] args) {
-        String query = "SELECT * FROM DirectoryRosterFile";
-        try
-        {
-            sql(query);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    /*
-    Function to execute some SQL statement.
-    Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
-    and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
-    */
-    public static void sql(String query) throws SQLException {
-
-        try {
-            //create connection and statement objects
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = null;
-            Statement stmt = null;
-
-            //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
-            //to see how to setup the DriverManager connection string
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "user", "password");
-            stmt = conn.createStatement();
-
-            ResultSet rs = stmt.executeQuery(query);
-            //this will loop through each result, pull your data here
-            while (rs.next()) {
-                //walk through each column
-                int numCols = rs.getMetaData().getColumnCount();
-                for (int i = 1; i <= numCols; i++)
-                {
-                    System.out.print(rs.getObject(i));
-                    System.out.print(" ");
-                }
-                System.out.print("\n");
-            }
-            //always close when finished
-            stmt.close();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-}
-
+#In Python, JSON is defined as a dictionary.
+roster = {}
+roster["tax_id"] = row["tax_id"]
+roster["practice_name"] = row["practice_name"]
+roster["practice_location_address1"] = row["practice_location_address1"]
+roster["practice_location_address2"] = row["practice_location_address2"]
 
 ```
 
 ```csharp
-//You may need to use NuGet to install the MS SQL package
-using System.Data.SqlClient;
+Using Newtonsoft.Json
 
-string connectionString = "Driver={SQL Server Native Client 11.0};Server=server_name;Database=db_name;Trusted_Connection=yes;";
-string queryString = "SELECT * FROM DirectoryRosterFile";
-
-using (SqlConnection connection = new SqlConnection(connectionString))
-{
-    SqlCommand command = new SqlCommand(queryString, connection);
-    connection.Open();
-    SqlDataReader reader = command.ExecuteReader();
-    try
-    {
-        while(reader.Read())
-        {
-            //once you have your data, refer to Anatomy of a Rest Call/Request Body to see how to populate your request with it
-            Console.WriteLine(String.Format("{0}, {1}", reader[0], reader[1]));
-        }
-    } finally
-    {
-        reader.Close();
-    }
-}
-
+JObject body = new JObject(
+new JProperty("provider", new JObject(
+    new JProperty("first_name", ""),
+    new JProperty("middle_name", ""),
+    new JProperty("last_name", ""),
+    new JProperty("license_number", ""))),
+new JProperty("caqh_provider_id", ""),
+new JProperty("region_id", ""));
 ```
 
 ```java
-/*
-Function to execute some SQL statement.
-Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
-and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
-You may also need to install a JDBC driver, info on that can be found at
-https://docs.oracle.com/cd/E11882_01/appdev.112/e13995/oracle/jdbc/OracleDriver.html
-*/
-public void sql() throws SQLException
-{
-    Connection conn = null;
-    Properties connectionProps = new Properties();
-    connectionProps.put("user", "username");
-    connectionProps.put("password", "password");
-    Statement stmt = null;
-    String query = "SELECT * FROM DirectoryRosterFile";
-    try
-    {
-        //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
-        //to see how to setup the DriverManager connection string
-        conn = DriverManager.getConnection(
-                "jdbc:" + "mysql" + "://" +
-                        "serverName" +
-                        ":" + "portNumber" + "/",
-                connectionProps);
-        stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        //this will loop through each result, pull your data here
-        while (rs.next())
-        {
-            String provider = rs.getString("provider");
-            String organization_id = rs.getString("organization_id");
-            String application_type = rs.getString("application_type");
-            //do something with your data
-        }
-
-    } catch (Exception ex)
-    {
-        System.out.println(ex.getMessage());
-    } finally {
-        if (stmt != null)
-            stmt.close();
-    }
-}
+JsonArray body = Json.createArrayBuilder()
+  .add(Json.createObjectBuilder()
+  .add("provider", Json.createObjectBuilder()
+      .add("first_name", "")
+      .add("middle_name", "")
+      .add("license_number", ""))
+  .add("caqh_provider_id", "")
+  .add("region_id", ""))
+  .build();
 ```
-In this code snippet we are querying data from a database and composing an object from the data rows.  Your own database implementation may vary, so be sure to research into your specific technology for how to connect to and query from a database or data store.  For this example we will be assuming you are using SQL Server (or MSSQL, Microsoft SQL).  If you are using a different technology, hopefully it can provide enough of a starting point to research the relevant solutions.
 
-You may choose to separate your data into multiple tables in your database, so update your query to reflect the necessary joins to retrieve all the relevant data.  In this case we have simplified the example so all the data is stored in a single table.  The SQL language we are using here is specific to SQL Server (Transact-SQL), so make sure you're aware of what SQL language your database uses and update it accordingly.
+JSON (JavaScript Object Notation) is a common standard for formatting and transfering data objects.  Your language will be able to represent JSON as either a string dictionary or a custom JSON-specific object.  
 
-This data will be passed into your REST calls to the Roster API in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
-
-| Data Object | Description |
-| ----------- | --- |
-| [Input File](#tocSpractice_location) | DirectAssure 2.0 allows providers to confirm their practice locations to the plan-specific practice location information. This requires information from the health plan on the practice locations for each provider. |
+| Data Type | Representation | Description |
+|-----|-----|-----|
+| String | "parameter": "value" | A string is a basic data type representing a series of characters |
+| Integer | "parameter": 0 | An integer is any number without decimals |
+| Decimal | "parameter": 1.5 | A decimal is any number with digits following a decimal |
+| Array | "parameter": [] | An array contains any number of objects or data types without a parameter |
+| Object | "parameter": {} | An object contains any number of parameters.  All JSON should be in at least one object |
 
 # Anatomy of a REST Call
 
@@ -802,4 +460,240 @@ The base URL will always be `https://proview.caqh.org`.
 | ProView | `PV` |
 | DirectAssure | `DA` |
 
+# Generating a Batch ID
+
+Sometimes, an endpoint will require you to create your own unique `batch id` for your request, instead of returning one to you. The format of these batch ids differ from ones returned by the system, the format is POID_YYYYMMDD_HHMMSS  (POID is the 3 digit organization ID assigned to the participating organization by CAQH). You should fill the POID field out with your id, then append a date stamp and time stamp. Make sure to use the same generated batch id across your request if you need it multiple times (there are some requests that let you break up files you send into multiple calls). 
+
+#Python Converter Tool
+
+
+
 # Rostering
+
+# - Roster File From Database
+
+```python
+
+import pyodbc 
+#pass your connection string into the "connect" function
+cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
+                      "Server=server_name;"
+                      "Database=db_name;"
+                      "Trusted_Connection=yes;")
+
+
+cursor = cnxn.cursor()
+cursor.execute('SELECT * FROM DirectoryRosterFile')
+
+data = []
+
+for row in cursor:
+    roster = {}
+	
+	roster["provider"] = row.provider
+	roster["organization_id"] = row.organization_id
+	roster["application_type"] = row.application_type
+	#continue for all other applicable fields
+	
+	#add the roster object to the data array
+	data.append(roster)
+	
+```
+
+```csharp
+
+using System;
+using System.Data.SqlClient;
+using System.Linq;
+
+namespace SQLQueryRunner
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //You may need to use NuGet to install System.Data.SqlClient
+            //replace with your connection string and query
+            string connectionString = "Server=(LocalDB)\\Instance;Database=testdb;Trusted_Connection=True;";
+            string queryString = "SELECT * FROM DirectoryRosterFile";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        //populate new JSON
+                        body = new JObject(
+                            new JProperty("tax_id", reader.GetString("tax_id")),
+                            new JProperty("practice_name", reader.GetString("practice_name")),
+                            new JProperty("practice_location_address1", reader.GetString("practice_location_address1")),
+                            new JProperty("practice_location_address2", reader.GetString("practice_location_address2")),
+                            new JProperty("practice_location_city", reader.GetString("practice_location_city")),
+                            new JProperty("practice_location_state", reader.GetString("practice_location_state")),
+                            new JProperty("practice_location_zipcode", reader.GetString("practice_location_zipcode")),
+                            new JProperty("practice_location_province", reader.GetString("practice_location_province")),
+                            new JProperty("practice_location_country", reader.GetString("practice_location_country")),
+                            new JProperty("npi_type_2", reader.GetString("npi_type_2")),
+                            new JProperty("po_location_id", reader.GetString("po_location_id")),
+                            new JProperty("location_type", reader.GetString("location_type")),
+                            new JProperty("providers", new JArray(
+                                new JObject(
+                                    new JProperty("caqh_provider_id", reader.GetString("caqh_provider_id")),
+                                    new JProperty("po_provider_id", reader.GetString("po_provider_id")),
+                                    new JProperty("provider_type", reader.GetString("provider_type")),
+                                    new JProperty("provider_primary_practice_state", reader.GetString("provider_primary_practice_state")),
+                                    new JProperty("provider_first_name", reader.GetString("provider_first_name")),
+                                    new JProperty("provider_middle_name", reader.GetString("provider_middle_name")),
+                                    new JProperty("provider_last_name", reader.GetString("provider_last_name")),
+                                    new JProperty("npi_type_1", reader.GetString("npi_type_1")),
+                                    new JProperty("po_provider_location_id", reader.GetString("po_provider_location_id")),
+                                    new JProperty("provider_dea", new JArray(
+                                        new JObject(
+                                        new JProperty("dea_number", reader.GetString("dea_number")),
+                                        new JProperty("dea_state", reader.GetString("dea_state"))
+                                    ))),
+                                    new JProperty("provider_license", new JArray(
+                                        new JObject(
+                                        new JProperty("license_number", reader.GetString("license_number")),
+                                        new JProperty("license_state", reader.GetString("license_state")),
+                                        new JProperty("license_expiration_date", reader.GetString("license_expiration_date"))
+                                    ))),
+                                    new JProperty("provider_practice_specialty", new JArray(
+                                        new JObject(
+                                        new JProperty("specialty_name", reader.GetString("specialty_name")),
+                                        new JProperty("specialty_taxonomy_code", reader.GetString("specialty_taxonomy_code")),
+                                        new JProperty("specialty_type", reader.GetString("specialty_type")))))
+                                )))
+                        );
+
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+        }
+    }
+}
+
+```
+
+```java
+
+import java.sql.*;
+import java.util.Properties;
+
+public class SQLDBConnect {
+
+    /*
+     Runner for sample MySQL connection and query. You will need to add mysql-connector-java-8.0.12.jar to the project
+     from: https://dev.mysql.com/downloads/connector/j/5.1.html (Your version of the JAR can be different).
+     This example connects to the sample database world in MySQL.
+     */
+    public static void main(String[] args) {
+        String query = "SELECT * FROM DirectoryRosterFile";
+        try
+        {
+            sql(query);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    /*
+    Function to execute some SQL statement.
+    Please also read https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+    and https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html.
+    */
+    public static void sql(String query) throws SQLException {
+
+        try {
+            //create connection and statement objects
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = null;
+            Statement stmt = null;
+
+            //refer to https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
+            //to see how to setup the DriverManager connection string
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "user", "password");
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+            //this will loop through each result, pull your data here
+            while (rs.next()) {
+                //walk through each column
+                JsonObject body = Json.createObjectBuilder()
+                   .add("tax_id", "")
+                   .add("practice_name", "")
+                   .add("practice_location_address1", "")
+                   .add("practice_location_address2", "")
+                   .add("practice_location_city", "")
+                   .add("practice_location_state", "")
+                   .add("practice_location_zipcode", "")
+                   .add("practice_location_province", "")
+                   .add("practice_location_country", "")
+                   .add("npi_type_2", "")
+                   .add("po_location_id", "")
+                   .add("location_type", "")
+                   .add("providers", Json.createArrayBuilder()
+                        .add(Json.createObjectBuilder()
+                            .add("caqh_provider_id", "")
+                            .add("po_provider_id", "")
+                            .add("provider_type", "")
+                            .add("provider_primary_practice_state", "")
+                            .add("provider_first_name", "")
+                            .add("provider_middle_name", "")
+                            .add("provider_last_name", "")
+                            .add("npi_type_1", "")
+                            .add("po_provider_location_id", "")
+                            .add("provider_dea", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("dea_number", "")
+                                    .add("dea_state", "")
+                                )
+                            )
+                            .add("provider_license", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("license_number", "")
+                                    .add("license_state", "")
+                                    .add("license_expiration_date", "")
+                                )
+                            )
+                            .add("provider_practice_specialty", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                    .add("specialty_name", "")
+                                    .add("specialty_taxonomy_code", "")
+                                    .add("specialty_type", "")
+                                )
+                            )
+                        )
+                   )
+
+                   .build();
+
+            }
+            //always close when finished
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+}
+
+
+```
+
+In this code snippet we are querying data from a database and composing a Roster object from the data rows.  You may choose to use an ORM, Object Relational Mapper (such as Entity Framework), in which case you will want to research into their recommended implementation.  This data will be passed into your REST calls to the Roster API in the form of URL parameters or the request body.  See the section below for more information on how to form a REST request in your language of choice.
+
+Please see the [Rostering](#rostering) section for how to insert, update and delete roster objects.
+
+| Data Object | Description |
+| ----------- | --- |
+| [Roster File](#tocSpractice_location) | The ProView Roster API accepts one or more providers at a time to roster, update, or delete the provider from the Participating Organization Roster. |
