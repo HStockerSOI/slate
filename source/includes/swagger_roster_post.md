@@ -964,21 +964,14 @@ If your request has been formatted correctly, it will return a batch id and a 20
 ```python
 
 batch_Id = ""
+error = ""
 
 if(response.status_code == 200):
 	batch_Id = loads(response.json())["batch_Id"]
-	
-
-Message = ""
-
-if(response.status_code == 400):
-	Message = loads(response.json())["Message"]
-	
-
-Message = ""
-
-if(response.status_code == 401):
-	Message = loads(response.json())["Message"]
+elif(response.status_code == 400):
+	error = loads(response.json())["error"]
+elif(response.status_code == 401):
+	error = loads(response.json())["error"]
 	
 
 ```

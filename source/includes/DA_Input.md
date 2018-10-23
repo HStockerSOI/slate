@@ -793,11 +793,7 @@ message = ""
 
 if(response.status_code == 200):
 	message = loads(response.json())["message"]
-	
-
-message = ""
-
-if(response.status_code == 201):
+elif(response.status_code == 201):
 	message = loads(response.json())["message"]
 	
 
@@ -1070,11 +1066,7 @@ message = ""
 
 if(response.status_code == 200):
 	message = loads(response.json())["message"]
-	
-
-message = ""
-
-if(response.status_code == 201):
+elif(response.status_code == 201):
 	message = loads(response.json())["message"]
 	
 
@@ -1373,6 +1365,8 @@ A 200 response returns the exception report in JSON format
 
 ```python
 
+message = ""
+
 extract_request_end_date = ""
 extract_request_start_date = ""
 extract_timestamp = ""
@@ -1387,11 +1381,7 @@ if(response.status_code == 200):
 	extract_version = loads(response.json())["extract_version"]
 	organization_id = loads(response.json())["organization_id"]
 	providers = loads(response.json())["providers"]
-	
-
-message = ""
-
-if(response.status_code == 294):
+elif(response.status_code == 294):
 	message = loads(response.json())["message"]
 	
 
