@@ -84,7 +84,8 @@ url += queryString.ToString();
 ```java
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
-params.add(new BasicNameValuePair("batchid", "string"));params.add(new BasicNameValuePair("eof", "true"));
+params.add(new BasicNameValuePair("batchid", "string"));
+params.add(new BasicNameValuePair("eof", "true"));
 url += URLEncodedUtils.format(params, "UTF-8");
 
 ```
@@ -206,7 +207,8 @@ import java.util.ArrayList;
 String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/Intake?";
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
-params.add(new BasicNameValuePair("batchid", "string"));params.add(new BasicNameValuePair("eof", "true"));
+params.add(new BasicNameValuePair("batchid", "string"));
+params.add(new BasicNameValuePair("eof", "true"));
 url += URLEncodedUtils.format(params, "UTF-8");
 
 //setup HTTP Auth
