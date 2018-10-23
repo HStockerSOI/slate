@@ -74,7 +74,8 @@ params = {
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
-queryString["batchid"] = "stringqueryString["eof"] = "true";
+queryString["batchid"] = "string";
+queryString["eof"] = "true";
 //add parameters to base url
 url += queryString.ToString();
 
@@ -293,7 +294,8 @@ string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
-queryString["batchid"] = "string";queryString["eof"] = "true";
+queryString["batchid"] = "string";
+queryString["eof"] = "true";
 //add parameters to base url
 url += queryString.ToString();
 
