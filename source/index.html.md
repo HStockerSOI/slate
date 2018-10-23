@@ -353,6 +353,7 @@ responseDelete = delete(URL, params = params, auth = (username, password))
 ```csharp
 
 string url = "https://proview-demo.caqh.org/api/endpoint";
+HttpClient client = new HttpClient();
 
 //set up HTTP auth
 var byteArray = Encoding.ASCII.GetBytes("username:password");
@@ -365,16 +366,14 @@ queryString["param1"] = "value2";
 ...
 url += queryString.ToString();
 
-//example of setting up a nested JSON body object
+//small sample JSON object
 JObject body = new JObject(
 new JProperty("provider", new JObject(
     new JProperty("first_name", ""),
     new JProperty("middle_name", ""),
-    ...
     new JProperty("license_number", ""))),
 new JProperty("caqh_provider_id", ""),
 new JProperty("po_provider_id", ""),
-...
 new JProperty("region_id", ""));
 
 //Many API calls require an array of JSON, even if it's only one object being sent
@@ -405,11 +404,9 @@ JsonArray body = Json.createArrayBuilder()
   .add("provider", Json.createObjectBuilder()
       .add("first_name", "")
       .add("middle_name", "")
-      ...
       .add("license_number", ""))
   .add("caqh_provider_id", "")
   .add("po_provider_id", "")
-  ...
   .add("region_id", ""))
   .build();
 

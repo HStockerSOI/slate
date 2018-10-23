@@ -7,8 +7,43 @@ To sign-up for the ProView Status Check API service and get authorization, pleas
 
 Method | Values
 --------- | ------- 
-GET | https://proview.caqh.org/RosterAPI/api/providerstatus
+GET | https://proview-demo.caqh.org/RosterAPI/api/providerstatus
 
+```csharp
+//includes
+using System;
+using System.Text;
+using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//base url
+string url = "https://proview-demo.caqh.org/RosterAPI/api/providerstatus?";
+```
+```java
+//imports (you will need javax.json and org.apache.httpcomponents)
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import javax.json.*;
+import java.io.StringReader;
+import java.util.List;
+import java.util.ArrayList;
+
+//base url
+String url = "https://proview-demo.caqh.org/RosterAPI/api/providerstatus?";
+```
 ## Staging The Data
 
 >Create parameters object
@@ -22,7 +57,24 @@ product = 'PV'
 params = { 'Product': product,  'Caqh_Provider_Id': caqh_provider_id,  'Organization_id': organization_id }
 
 ```
+```csharp
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["Product"] = "string";
+queryString["Caqh_Provider_Id"] = "Integer";
+queryString["Organization_ID"] = "Integer";
+//add parameters to base url
+url += queryString.ToString();
+```
 
+```java
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("Product", "string"));
+params.add(new BasicNameValuePair("Caqh_Provider_Id", "Integer"));
+params.add(new BasicNameValuePair("Organization_ID", "Integer"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+```
 The status endpoint will take your [product](#proview-and-directassure), CAQH Provider Id and the Organization Id that can both be found in the CAQH portal.  For this sample we have assumed you are using the ProView `PV` product.  These should be passed in to the [parameters](#query-parameters) of the request.  The Status endpoint only accepts `GET` requests which will not contain a request body.
 
 ## GET /ProviderStatus
@@ -71,7 +123,7 @@ else:
 ```
 
 ```java
-String url = "https://proview.caqh.org/RosterAPI/api/providerstatus?";
+String url = "https://proview-demo.caqh.org/RosterAPI/api/providerstatus?";
 List<NameValuePair> params = new ArrayList<NameValuePair>();
 params.add(new BasicNameValuePair("Product", "string"));
 params.add(new BasicNameValuePair("Caqh_Provider_Id", "Integer"));
@@ -110,7 +162,7 @@ try
 HttpClient client = new HttpClient();
 
 //base url
-string url = "https://proview.caqh.org/RosterAPI/api/providerstatus?";
+string url = "https://proview-demo.caqh.org/RosterAPI/api/providerstatus?";
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -180,3 +232,48 @@ Status Code **200**
 | Provider_Found_Flag|string|false|none|A flag that denotes if the provider is found in the system. Valid values are 'Y' and 'N'|
 
 ## Next Steps
+
+> Parsing the response
+
+```csharp
+
+string organization_id = "";
+string caqh_provider_id = "";
+string roster_status = "";
+string provider_status = "";
+string provider_status_date = "";
+string provider_practice_state = "";
+string provider_found_flag = "";
+
+if ((int)result.StatusCode == 200)
+{
+    organization_id = responseObj.organization_id;
+    caqh_provider_id = responseObj.caqh_provider_id;
+    provider_status = responseObj.provider_status;
+    provider_status_date = responseObj.provider_status_date;
+    provider_practice_state = responseObj.provider_practice_state;
+    provider_found_flag = responseObj.provider_found_flag;
+    
+}
+
+```
+```java
+
+String organization_id = "";
+String caqh_provider_id = "";
+String roster_status = "";
+String provider_status = "";
+String provider_status_date = "";
+String provider_practice_state = "";
+String provider_found_flag = "";
+
+if (response.getStatusLine().getStatusCode() == 200)
+{
+    organization_id = responseJson.getString(organization_id);
+    caqh_provider_id = responseJson.getString(caqh_provider_id);
+    provider_status = responseJson.getString(provider_status);
+    provider_status_date = responseJson.getString(provider_status_date);
+    provider_practice_state = responseJson.getString(provider_practice_state);
+    provider_found_flag = responseJson.getString(provider_found_flag);
+    
+}

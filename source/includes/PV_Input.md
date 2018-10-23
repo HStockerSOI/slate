@@ -7,7 +7,7 @@
 ```python
 from requests import get
 
-url = "https://proview.caqh.org/DocumentAPI/api/suppdocs"
+url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs"
 ```
 
 ``` csharp
@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 //base url
-string url = "https://proview.caqh.org/DocumentAPI/api/suppdocs?";
+string url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs?";
 ```
 ```java
 //imports (you will need javax.json and org.apache.httpcomponents)
@@ -43,14 +43,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 //base url
-String url = "https://proview.caqh.org/DocumentAPI/api/suppdocs?";
+String url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs?";
 ```
 The Provider Supporting Document Retrieval (PSDR) API is a RESTful web service that allows a participating organization (PO) access to a provider’s document in near real-time.  This allows seamless integration with PO-based systems that utilize documents for internal processing.  
 The intent of this feature is for a participating organization to utilize this web service in order to call for a provider’s supporting document(s), in lieu of receiving the supporting documents in a standard or custom extract.
 
 | Method | URL |
 |---|---|
-|GET | https://proview.caqh.org/DocumentAPI/api/suppdocs |
+|GET | https://proview-demo.caqh.org/DocumentAPI/api/suppdocs |
 
 <h2 id="ProView-Document-Api-suppdocsGET-staging-data">Staging The Data</h2>
 
@@ -72,7 +72,8 @@ params = {
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
-queryString["organizationID"] = "stringqueryString["docType"] = "string";
+queryString["organizationID"] = "string";
+queryString["docType"] = "string";
 //add parameters to base url
 url += queryString.ToString();
 
@@ -139,7 +140,7 @@ params = {
 username = "yourUsername"
 password = "yourPassword"
 
-response = get("https://proview.caqh.org/DocumentAPI/api/suppdocs", params = params, headers = headers, auth = (username, password))
+response = get("https://proview-demo.caqh.org/DocumentAPI/api/suppdocs", params = params, headers = headers, auth = (username, password))
 
 print(response.json())
 
@@ -164,7 +165,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 
-String url = "https://proview.caqh.org/DocumentAPI/api/suppdocs?";
+String url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs?";
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
 params.add(new BasicNameValuePair("organizationID", "string"));params.add(new BasicNameValuePair("docType", "string"));
@@ -209,11 +210,12 @@ using Newtonsoft.Json.Linq;
 HttpClient client = new HttpClient();
 
 //base url
-string url = "https://proview.caqh.org/DocumentAPI/api/suppdocs?";
+string url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs?";
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
-queryString["organizationID"] = "string";queryString["docType"] = "string";
+queryString["organizationID"] = "string";
+queryString["docType"] = "string";
 //add parameters to base url
 url += queryString.ToString();
 
@@ -264,10 +266,6 @@ Console.WriteLine(responseObj.ToString());
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Response containing the requested PDF in raw binary format.|[PdfResponse](#schemapdfresponse)|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
 
 <h2 id="ProView-Document-Api-suppdocsGET-next-step">Next Steps</h2>
 
