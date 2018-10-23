@@ -275,8 +275,8 @@ Console.WriteLine(responseObj.ToString());
 
 content = ""
 
-if(response.status_Code == 200):
-	content = response.json()["content"]
+if(response.status_code == 200):
+	content = loads(response.json())["content"]
 	
 
 ```

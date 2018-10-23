@@ -6,7 +6,7 @@
 
 ```python
 from requests import post
-from json import dumps
+from json import dumps, loads
 
 url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/Intake"
 ```
@@ -107,7 +107,7 @@ The layout of the file is TIN-centric. <b>The input file service can be up to 2G
 
 ```python
 from requests import post
-from json import dumps
+from json import dumps, loads
 
 headers = {
   "Content-Type": 'application/json',
@@ -410,51 +410,24 @@ You will want to refer to the [Generating a Batch Id](#generating-a-batch-id) se
 ```python
 
 message = ""
-
-if(response.status_Code == 200):
-	message = response.json()["message"]
-	
-
 error = ""
 
-if(response.status_Code == 400):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 401):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 402):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 420):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 421):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 422):
-	error = response.json()["error"]
-	
-
-error = ""
-
-if(response.status_Code == 500):
-	error = response.json()["error"]
+if(response.status_code == 200):
+	message = loads(response.json())["message"]
+elif(response.status_code == 400):
+	error = loads(response.json())["error"]
+elif(response.status_code == 401):
+	error = loads(response.json())["error"]
+elif(response.status_code == 402):
+	error = loads(response.json())["error"]
+elif(response.status_code == 420):
+	error = loads(response.json())["error"]
+elif(response.status_code == 421):
+	error = loads(response.json())["error"]
+elif(response.status_code == 422):
+	error = loads(response.json())["error"]
+elif(response.status_code == 500):
+	error = loads(response.json())["error"]
 	
 
 ```
@@ -818,14 +791,10 @@ Console.WriteLine(responseObj.ToString());
 
 message = ""
 
-if(response.status_Code == 200):
-	message = response.json()["message"]
-	
-
-message = ""
-
-if(response.status_Code == 201):
-	message = response.json()["message"]
+if(response.status_code == 200):
+	message = loads(response.json())["message"]
+elif(response.status_code == 201):
+	message = loads(response.json())["message"]
 	
 
 ```
@@ -1095,14 +1064,10 @@ A 200 response returns the exception report in JSON format
 
 message = ""
 
-if(response.status_Code == 200):
-	message = response.json()["message"]
-	
-
-message = ""
-
-if(response.status_Code == 201):
-	message = response.json()["message"]
+if(response.status_code == 200):
+	message = loads(response.json())["message"]
+elif(response.status_code == 201):
+	message = loads(response.json())["message"]
 	
 
 ```
@@ -1400,6 +1365,8 @@ A 200 response returns the exception report in JSON format
 
 ```python
 
+message = ""
+
 extract_request_end_date = ""
 extract_request_start_date = ""
 extract_timestamp = ""
@@ -1407,19 +1374,15 @@ extract_version = ""
 organization_id = ""
 providers = {}
 
-if(response.status_Code == 200):
-	extract_request_end_date = response.json()["extract_request_end_date"]
-	extract_request_start_date = response.json()["extract_request_start_date"]
-	extract_timestamp = response.json()["extract_timestamp"]
-	extract_version = response.json()["extract_version"]
-	organization_id = response.json()["organization_id"]
-	providers = response.json()["providers"]
-	
-
-message = ""
-
-if(response.status_Code == 294):
-	message = response.json()["message"]
+if(response.status_code == 200):
+	extract_request_end_date = loads(response.json())["extract_request_end_date"]
+	extract_request_start_date = loads(response.json())["extract_request_start_date"]
+	extract_timestamp = loads(response.json())["extract_timestamp"]
+	extract_version = loads(response.json())["extract_version"]
+	organization_id = loads(response.json())["organization_id"]
+	providers = loads(response.json())["providers"]
+elif(response.status_code == 294):
+	message = loads(response.json())["message"]
 	
 
 ```
