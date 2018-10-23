@@ -82,7 +82,8 @@ url += queryString.ToString();
 ```java
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
-params.add(new BasicNameValuePair("organizationID", "string"));params.add(new BasicNameValuePair("docType", "string"));
+params.add(new BasicNameValuePair("organizationID", "string"));
+params.add(new BasicNameValuePair("docType", "string"));
 url += URLEncodedUtils.format(params, "UTF-8");
 
 ```
@@ -168,7 +169,8 @@ import java.util.ArrayList;
 String url = "https://proview-demo.caqh.org/DocumentAPI/api/suppdocs?";
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
-params.add(new BasicNameValuePair("organizationID", "string"));params.add(new BasicNameValuePair("docType", "string"));
+params.add(new BasicNameValuePair("organizationID", "string"));
+params.add(new BasicNameValuePair("docType", "string"));
 url += URLEncodedUtils.format(params, "UTF-8");
 
 //setup HTTP Auth
