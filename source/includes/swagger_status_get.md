@@ -277,3 +277,6 @@ if (response.getStatusLine().getStatusCode() == 200)
     provider_found_flag = responseJson.getString(provider_found_flag);
     
 }
+```
+
+Once you have retrieved the status of your rostering, you will want to move on to either Add Roster, in the case that the provider was not found, or another API using the IDs returned here to make those calls.

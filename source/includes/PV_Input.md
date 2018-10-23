@@ -305,3 +305,5 @@ if (response.getStatusLine().getStatusCode() == 200)
 }
 
 ```
+
+You may wish to store this file for further use.  Once you have received a successful 200 response, write the data to a file so that it is permanently stored.

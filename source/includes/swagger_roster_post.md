@@ -287,6 +287,8 @@ if (response.getStatusLine().getStatusCode() == 200)
 
 ```
 
+Checking your rostering status should be the first step in any CAQH operation you are performing.  Use the links below to see what endpoints you may follow to afterwards.
+
 ### See also:
 
 * [Update Roster](#todo)
@@ -623,6 +625,8 @@ if (response.getStatusLine().getStatusCode() == 200)
 }
 
 ```
+
+Once you have submitted your request, you will want to make periodic calls to the Roster Result endpoint.  This will update you about the status of your request and return the result to you once it has been completed.
 
 ### See also:
 
@@ -1393,9 +1397,10 @@ if (response.getStatusLine().getStatusCode() == 200)
 
 ```
 
+If you are still having issues with deleting your roster via the CAQH API, please contact CAQH technical support.
+
 ### See also:
 
 * [Update Roster](#todo)
-* [Delete Roster](#todo)
-* [Roster Quick Add](#todo)
+* [Roster Add](#todo)
 

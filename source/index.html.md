@@ -449,7 +449,7 @@ Each of these methods can be used to invoke a different functionality on the sam
 
 # Proview and DirectAssure
 
-Many of the calls you will make to the APIs will take in a `product` parameter.  This product can be either ProView or DirectAssure. Be sure to know which product line you are using and input the proper value into the product parameter. 
+Some of the calls you will make to the APIs will take in a `product` parameter; specifically the Rostering endpoints.  This product can be either ProView or DirectAssure. Be sure to know which product line you are using and input the proper value into the product parameter. 
 
 The base URL will always be `https://proview.caqh.org`.
 
@@ -464,7 +464,7 @@ Sometimes, an endpoint will require you to create your own unique `batch id` for
 
 #Python Converter Tool
 
-> \>__python__ \_\_main\_\_.py --__poid__ 1234 --__username__ Username --__password__ Password --__filepath__ c:/CAQH
+> \> __python__ \_\_main\_\_.py --__poid__ 1234 --__username__ Username --__password__ Password --__filepath__ c:/CAQH
 
 CAQH provides a handy converter tool to allow you to convert a `|` separated excel file into the proper format for submission or simply submit your already formatted JSON object via the command line.
 
