@@ -80,7 +80,7 @@ url += URLEncodedUtils.format(params, "UTF-8");
 
 //setup http auth
 CredentialsProvider provider = new BasicCredentialsProvider();
-UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("soidevdemo", "soidevdemo@123");
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("username", "password");
 provider.setCredentials(AuthScope.ANY, credentials);
 
 HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
@@ -95,8 +95,6 @@ try
     JsonReader jsonReader = Json.createReader(new StringReader(responseString));
     JsonObject responseJson = jsonReader.readObject();
     jsonReader.close();
-    String batch_status = "";
-    String batch_time = "";
     System.out.println(responseJson.toString());
 
 } catch (Exception ex)
