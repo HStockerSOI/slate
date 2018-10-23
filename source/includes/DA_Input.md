@@ -621,27 +621,8 @@ Participating Organizations can use this service to view the status of Practice 
 
 <h2 id="Direct-Assure-POPracticeLocation-SubmissionBatchID-GET-staging-data">Staging The Data</h2>
 
-> Create parameters object
+You will need a `Batch ID` from a previous Practice Location POST call.  This batch ID will be coded into the URL by replacing `{SubmissionBatchID}`.  There are no parameters and no request body.
 
-  If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
-
-```python
-
-params = {
-}
-```
-
-```csharp
-
-//This request does not require URL parameters
-
-```
-
-```java
-
-//This request does not require URL Parameters
-
-```
 <h3 id="Direct-Assure-POPracticeLocation-SubmissionBatchID-GET-staging-data-parameter13">Parameters</h3>
 
   The data should be passed in to the [parameters](#query-parameters) of the request.
@@ -657,17 +638,12 @@ params = {
 ```python
 from requests import get
 
-headers = {
-  "Accept": '*/*'
-}
-
-params = {
-}
-
 username = "yourUsername"
 password = "yourPassword"
 
-response = get("https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/{SubmissionBatchID}", params = params, headers = headers, auth = (username, password))
+BatchID = ""
+
+response = get("https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/" + BatchID, auth = (username, password))
 
 print(response.json())
 
@@ -692,7 +668,8 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 
-String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/{SubmissionBatchID}?";
+String BatchID = "string";
+String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/" + BatchID;
 
 //setup HTTP Auth
 CredentialsProvider provider = new BasicCredentialsProvider();
@@ -732,8 +709,9 @@ using Newtonsoft.Json.Linq;
 //HTTPClient should be instantiated once and re-used in your application
 HttpClient client = new HttpClient();
 
+String BatchID = "string";
 //base url
-string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/{SubmissionBatchID}?";
+string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/" + BatchID;
 
 //set up HTTP auth (replace username/password with yours)
 var byteArray = Encoding.ASCII.GetBytes("username:password");
@@ -809,8 +787,6 @@ if ((int)result.StatusCode == 200)
 	
 }
 
-string message = "";
-
 if ((int)result.StatusCode == 201)
 {
 	message = responseObj.message;
@@ -828,8 +804,6 @@ if (response.getStatusLine().getStatusCode() == 200)
 	
 }
 
-String message = "";
-
 if (response.getStatusLine().getStatusCode() == 201)
 {
 	message = responseJson.getString("message");
@@ -837,7 +811,7 @@ if (response.getStatusLine().getStatusCode() == 201)
 }
 
 ```
-Once the processing has been finished, you may want to use the [Exception Report](#todo) endpoint to check what went wrong if an exception occurred.
+Once the processing has been finished, you may want to use the [Exception Report](#Direct-Assure-Direct-AssureGETintro19) endpoint to check what went wrong if an exception occurred.
 
 <h1 id="Direct-Assure-Direct-AssureGETintro19"> - Input Exception Report Service [GET]</h1>
 
@@ -860,7 +834,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 //base url
-string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}?";
+string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}";
 ```
 
 ```java
@@ -883,7 +857,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 //base url
-String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}?";
+String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}";
 ```
 
 Participating Organizations can use the Exception Report service to view the results of the submission file process and identify any exceptions. 
@@ -898,23 +872,8 @@ Participating Organizations can use the Exception Report service to view the res
 
   If you are storing this data in a database and are unsure about how best to retrieve and parse it, please refer to the [data loading and parsing](#loading-and-parsing-data) section.
 
-```python
-
-params = {
-}
-```
-
-```csharp
-
-//This request does not require URL parameters
-
-```
-
-```java
-
-//This request does not require URL Parameters
-
-```
+  This endpoint does not contain query parameters or a request body, however you will have to use the `Batch ID` from your Input File Request in the URL.  Replace `{SubmissionBatchID}` with the `Batch ID` return from your Input File Request POST.  If you do not have a `Batch ID`, submit an Input File Request first.
+  
 <h3 id="Direct-Assure-POPracticeLocation-MatchReport-SubmissionBatchID-GET-staging-data-parameter">Parameters</h3>
 
   The data should be passed in to the [parameters](#query-parameters) of the request.
@@ -930,17 +889,12 @@ params = {
 ```python
 from requests import get
 
-headers = {
-  "Accept": '*/*'
-}
-
-params = {
-}
-
 username = "yourUsername"
 password = "yourPassword"
 
-response = get("https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}", params = params, headers = headers, auth = (username, password))
+batchId = "string"
+
+response = get("https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/" + batchId, auth = (username, password))
 
 print(response.json())
 
@@ -965,7 +919,8 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 
-String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}?";
+String BatchID = "string";
+String url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/" + BatchID;
 
 //setup HTTP Auth
 CredentialsProvider provider = new BasicCredentialsProvider();
@@ -1005,8 +960,9 @@ using Newtonsoft.Json.Linq;
 //HTTPClient should be instantiated once and re-used in your application
 HttpClient client = new HttpClient();
 
+string BatchID = "string";
 //base url
-string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/{SubmissionBatchID}?";
+string url = "https://proview-demo.caqh.org/DirectAssure/api/POPracticeLocation/MatchReport/" + BatchID;
 
 //set up HTTP auth (replace username/password with yours)
 var byteArray = Encoding.ASCII.GetBytes("username:password");
@@ -1024,10 +980,7 @@ Console.WriteLine(responseObj.ToString());
 
 `GET /POPracticeLocation/MatchReport/{SubmissionBatchID}`
 
-<h3 id="popracticeexception-parameters">Parameters</h3>
-
-|Parameter|Type|Required|Description|
-|---|---|---|---|
+Make sure you have a Batch ID prepared from a previous Input File Request call.
 
 <h2 id="Direct-Assure-POPracticeLocation-MatchReport-SubmissionBatchID-GET-responses24">Responses</h2>
 
@@ -1111,6 +1064,7 @@ if (response.getStatusLine().getStatusCode() == 201)
 
 ```
   
+  Once you have read and understood your exception, you will want to revisit the Input File Submission endpoint with the appropriate changes needed to successfully submit an input file.  If you continue to have trouble, please reach out to CAQH technical support for assistance.
 
 <h1 id="Direct-Assure-Direct-AssureGETintro26"> - Direct Assure Extract [GET]</h1>
 
