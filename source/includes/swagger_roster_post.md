@@ -1124,7 +1124,7 @@ url += URLEncodedUtils.format(params, "UTF-8");
 
   The status endpoint will take the Product of `PV` or `DA`, depending on if you are on ProView or DirectAssure.  The data should be passed in to the [parameters](#query-parameters) of the request.
 
-<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-api-definition"> POST /Deroster</h2>
+<h2 id="CAQH-ProView-RosterAPI-DerosterPOST-api-definition"> PUT /Deroster</h2>
 
 The deroster endpoint will take in an array of objects containing the Organization ID and the CAQH Provider ID.  You will be returned a Batch Id which should be passed into the Roster Result endpoint.
 
@@ -1225,7 +1225,7 @@ JsonArray body = Json.createArrayBuilder()
 
 try
 {
-    HttpPost request = new HttpPut(url);
+    HttpPut request = new HttpPut(url);
     StringEntity bodyParams = new StringEntity(body.toString());
     request.addHeader("content-type", "application/json");
     request.setEntity(bodyParams);
