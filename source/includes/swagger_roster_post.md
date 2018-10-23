@@ -249,9 +249,9 @@ batch_time = ""
 roster_result = ""
 
 if(response.status_code == 200):
-	batch_status = response.json()["batch_status"]
-	batch_time = response.json()["batch_time"]
-	roster_result = response.json()["roster_result"]
+	batch_status = loads(response.json())["batch_status"]
+	batch_time = loads(response.json())["batch_time"]
+	roster_result = loads(response.json())["roster_result"]
 	
 
 ```
@@ -299,7 +299,7 @@ if (response.getStatusLine().getStatusCode() == 200)
 
 ```python
 from requests import put
-from json import dumps
+from json import dumps, loads
 
 url = "https://proview-demo.caqh.org/RosterAPI/API/Roster"
 ```
@@ -394,7 +394,7 @@ The Update Roster Request takes in an Update Roster object containing a subset o
 
 ```python
 from requests import put
-from json import dumps
+from json import dumps, loads
 
 headers = {
   "Content-Type": 'application/json',
@@ -596,7 +596,7 @@ If your request has been formatted correctly, it will return a batch id and a 20
 batch_Id = ""
 
 if(response.status_code == 200):
-	batch_Id = response.json()["batch_Id"]
+	batch_Id = loads(response.json())["batch_Id"]
 	
 
 ```
@@ -966,19 +966,19 @@ If your request has been formatted correctly, it will return a batch id and a 20
 batch_Id = ""
 
 if(response.status_code == 200):
-	batch_Id = response.json()["batch_Id"]
+	batch_Id = loads(response.json())["batch_Id"]
 	
 
 Message = ""
 
 if(response.status_code == 400):
-	Message = response.json()["Message"]
+	Message = loads(response.json())["Message"]
 	
 
 Message = ""
 
 if(response.status_code == 401):
-	Message = response.json()["Message"]
+	Message = loads(response.json())["Message"]
 	
 
 ```
@@ -1372,7 +1372,7 @@ If your request has been formatted correctly, it will return a batch id and a 20
 batch_Id = ""
 
 if(response.status_code == 200):
-	batch_Id = response.json()["batch_Id"]
+	batch_Id = loads(response.json())["batch_Id"]
 	
 
 ```
