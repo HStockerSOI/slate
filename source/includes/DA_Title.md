@@ -157,8 +157,50 @@ using (SqlConnection connection = new SqlConnection(connectionString))
     {
         while(reader.Read())
         {
-            //once you have your data, refer to Anatomy of a Rest Call/Request Body to see how to populate your request with it
-            Console.WriteLine(String.Format("{0}, {1}", reader[0], reader[1]));
+            //populate new JSON
+            body = new JObject(
+                new JProperty("tax_id", reader.GetString("tax_id")),
+                new JProperty("practice_name", reader.GetString("practice_name")),
+                new JProperty("practice_location_address1", reader.GetString("practice_location_address1")),
+                new JProperty("practice_location_address2", reader.GetString("practice_location_address2")),
+                new JProperty("practice_location_city", reader.GetString("practice_location_city")),
+                new JProperty("practice_location_state", reader.GetString("practice_location_state")),
+                new JProperty("practice_location_zipcode", reader.GetString("practice_location_zipcode")),
+                new JProperty("practice_location_province", reader.GetString("practice_location_province")),
+                new JProperty("practice_location_country", reader.GetString("practice_location_country")),
+                new JProperty("npi_type_2", reader.GetString("npi_type_2")),
+                new JProperty("po_location_id", reader.GetString("po_location_id")),
+                new JProperty("location_type", reader.GetString("location_type")),
+                new JProperty("providers", new JArray(
+                    new JObject(
+                        new JProperty("caqh_provider_id", reader.GetString("caqh_provider_id")),
+                        new JProperty("po_provider_id", reader.GetString("po_provider_id")),
+                        new JProperty("provider_type", reader.GetString("provider_type")),
+                        new JProperty("provider_primary_practice_state", reader.GetString("provider_primary_practice_state")),
+                        new JProperty("provider_first_name", reader.GetString("provider_first_name")),
+                        new JProperty("provider_middle_name", reader.GetString("provider_middle_name")),
+                        new JProperty("provider_last_name", reader.GetString("provider_last_name")),
+                        new JProperty("npi_type_1", reader.GetString("npi_type_1")),
+                        new JProperty("po_provider_location_id", reader.GetString("po_provider_location_id")),
+                        new JProperty("provider_dea", new JArray(
+                            new JObject(
+                            new JProperty("dea_number", reader.GetString("dea_number")),
+                            new JProperty("dea_state", reader.GetString("dea_state"))
+                        ))),
+                        new JProperty("provider_license", new JArray(
+                            new JObject(
+                            new JProperty("license_number", reader.GetString("license_number")),
+                            new JProperty("license_state", reader.GetString("license_state")),
+                            new JProperty("license_expiration_date", reader.GetString("license_expiration_date"))
+                        ))),
+                        new JProperty("provider_practice_specialty", new JArray(
+                            new JObject(
+                            new JProperty("specialty_name", reader.GetString("specialty_name")),
+                            new JProperty("specialty_taxonomy_code", reader.GetString("specialty_taxonomy_code")),
+                            new JProperty("specialty_type", reader.GetString("specialty_type")))))
+                    )))
+                        );
+
         }
     } finally
     {
