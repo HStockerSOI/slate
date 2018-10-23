@@ -71,56 +71,68 @@ else:
 ```
 
 ```java
-URL obj = new URL("https://proview.caqh.org/RosterAPI/api/ProviderStatus?Product=PV&Caqh_Provider_Id=string&Organization_id=string");
-HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-con.setRequestMethod("GET");
-int responseCode = con.getResponseCode();
-BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
-String inputLine;
-StringBuffer response = new StringBuffer();
-while ((inputLine = in.readLine()) != null) {
-    response.append(inputLine);
+String url = "https://proview.caqh.org/RosterAPI/api/providerstatus?";
+List<NameValuePair> params = new ArrayList<NameValuePair>();
+params.add(new BasicNameValuePair("Product", "string"));
+params.add(new BasicNameValuePair("Caqh_Provider_Id", "Integer"));
+params.add(new BasicNameValuePair("Organization_ID", "Integer"));
+url += URLEncodedUtils.format(params, "UTF-8");
+
+//setup http auth
+CredentialsProvider provider = new BasicCredentialsProvider();
+UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("soidevdemo", "soidevdemo@123");
+provider.setCredentials(AuthScope.ANY, credentials);
+
+HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+
+try
+{
+    HttpGet request = new HttpGet(url);
+    HttpResponse response = client.execute(request);
+
+    HttpEntity entity = response.getEntity();
+    String responseString = EntityUtils.toString(entity);
+    JsonReader jsonReader = Json.createReader(new StringReader(responseString));
+    JsonObject responseJson = jsonReader.readObject();
+    jsonReader.close();
+    String batch_status = "";
+    String batch_time = "";
+    System.out.println(responseJson.toString());
+
+} catch (Exception ex)
+{
+    //handle errors here
+    System.out.println(ex.getMessage());
 }
-in.close();
-System.out.println(response.toString());
 
 ```
 
 ```csharp
-using(HttpClient client = new HttpClient())
-{
-    // Add an Accept header for JSON format.
-    client.DefaultRequestHeaders.Accept.Add(
-    new MediaTypeWithQualityHeaderValue("application/json"));
+//HTTPClient should be instantiated once and re-used in your application
+HttpClient client = new HttpClient();
 
-    Dictionary<string, string> parameters = new Dictionary<string,string>()
-    {
-        {"product", "PV"}
-    }
-    var encodedContent = new FormUrlEncodedContent(parameters);
+//base url
+string url = "https://proview.caqh.org/RosterAPI/api/providerstatus?";
 
-    // List data response.
-    HttpResponseMessage response = client.PostAsync("https://proview-demo.caqh.org/RosterAPI/api/Roster", encodedContent).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
-    if (response.IsSuccessStatusCode)
-    {
-        // Parse the response body.
-        var dataObjects = response.Content.ReadAsAsync<IEnumerable<DataObject>>().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
-        foreach (var d in dataObjects)
-        {
-            Console.WriteLine("{0}", d.Name);
-        }
-    }
-    else
-    {
-        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-    }
+//setup query parameters
+var queryString = HttpUtility.ParseQueryString(string.Empty);
+queryString["Product"] = "string";
+queryString["Caqh_Provider_Id"] = "Integer";
+queryString["Organization_ID"] = "Integer";
+//add parameters to base url
+url += queryString.ToString();
 
-    //Make any other calls using HttpClient here.
+//set up HTTP auth (replace username/password with yours)
+var byteArray = Encoding.ASCII.GetBytes("username:password");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-    //HttpClient will automatically be disposed of at the conclusion of the using block
-}
+//Send the GET Request
+var result = client.GetAsync(url).Result;
 
+//get the response message and parse it
+string resultTxt = result.Content.ReadAsStringAsync().Result;
+dynamic responseObj = JsonConvert.DeserializeObject<dynamic>(resultTxt);
+Console.WriteLine(responseObj.ToString());
 ```
 
 `GET /ProviderStatus`
