@@ -1052,7 +1052,7 @@ You will receive a [batch id](#tocSaddresponse) which should be passed in to the
 ```python
 from requests import post
 
-url = "https://proview-demo.caqh.org/Deroster"
+url = "https://proview-demo.caqh.org/ProviewAPI/API/Deroster"
 ```
 
 ``` csharp
@@ -1066,7 +1066,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 //base url
-string url = "https://proview-demo.caqh.org/Deroster?";
+string url = "https://proview-demo.caqh.org/ProviewAPI/API/Deroster?";
 ```
 ```java
 //imports (you will need javax.json and org.apache.httpcomponents)
@@ -1088,13 +1088,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 //base url
-String url = "https://proview-demo.caqh.org/Deroster?";
+String url = "https://proview-demo.caqh.org/ProviewAPI/API/Deroster?";
 ```
 A PO can delete one or more providers from the roster by submitting a call to the following URL.
 
 | Method | URL |
 |---|---|
-|POST | https://proview-demo.caqh.org/Deroster |
+|POST | https://proview-demo.caqh.org/ProviewAPI/API/Deroster |
 
 <h2 id="CAQH-ProView-RosterAPI-DerosterPOST-staging-data">Staging The Data</h2>
 
@@ -1153,7 +1153,7 @@ params = {
 username = "yourUsername"
 password = "yourPassword"
 
-response = put("https://proview-demo.caqh.org/Deroster", params = params, headers = headers, auth = (username, password))
+response = put("https://proview-demo.caqh.org/ProviewAPI/API/Deroster", params = params, headers = headers, auth = (username, password))
 
 print(response.json())
 
@@ -1178,7 +1178,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.ArrayList;
 
-String url = "https://proview-demo.caqh.org/Deroster?";
+String url = "https://proview-demo.caqh.org/ProviewAPI/API/Deroster?";
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
 params.add(new BasicNameValuePair("product", "string"));
@@ -1265,7 +1265,7 @@ using Newtonsoft.Json.Linq;
 HttpClient client = new HttpClient();
 
 //base url
-string url = "https://proview-demo.caqh.org/Deroster?";
+string url = "https://proview-demo.caqh.org/ProviewAPI/API/Deroster?";
 
 //setup query parameters
 var queryString = HttpUtility.ParseQueryString(string.Empty);
