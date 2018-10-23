@@ -1225,7 +1225,7 @@ JsonArray body = Json.createArrayBuilder()
 
 try
 {
-    HttpPost request = new HttpPut(url);
+    HttpPut request = new HttpPut(url);
     StringEntity bodyParams = new StringEntity(body.toString());
     request.addHeader("content-type", "application/json");
     request.setEntity(bodyParams);
