@@ -12,6 +12,7 @@ includes:
   - PV_Input
   - DA_Title
   - DA_Input
+  - Schemas
 toc_footers: []
 search: true
 headingLevel: 2
@@ -463,7 +464,25 @@ Sometimes, an endpoint will require you to create your own unique `batch id` for
 
 #Python Converter Tool
 
+> \>__python__ \_\_main\_\_.py --__poid__ 1234 --__username__ Username --__password__ Password --__filepath__ c:/CAQH
 
+CAQH provides a handy converter tool to allow you to convert a `|` separated excel file into the proper format for submission or simply submit your already formatted JSON object via the command line.
+
+Your JSON Practice Location object should be in a `.json` file somewhere accessible in your file system.  To run this program from the command line, navigate to the containing folder and then run the command on the right or specify the exact path to the program from the working directory.
+
+<aside>
+You will need to have a python interpreter installed to use this piece of software.
+</aside>
+
+| Name | Parameter | Description |
+| -- | -- | -- |
+| Organization ID | --poid | POID is the Organization ID assigned to the participating organization by CAQH. |
+| Username | --username | Username associated with the Organization ID for DirectAssure login. Required for POST. |
+| Password | --password | Password associated with the Organization ID for DirectAssure login. Required for POST. |
+| File path | --filepath | Filepath of '|' delimited file to parse and call the DirectAssure API with. This or jsonFilepath is required for POST. |
+| JSON file path | --jsonfilepath | Filepath of json file to call the DirectAssure API with (unmodified).  This or filepath is required for POST. |
+| Make JSON file path | --makeJsonFilepath | Filepath to dump the POST json content to. If makeJsonFilepath is specified, no POST to DirectAssure occurs. Use this to optionally inspect the processed file as json before submission. Do not provide poid, username, and password when using this functionality. |
+| Request endpoint | --requestEndpoint | POST URL for DirectAssure record submission. Default is https://directassure.caqh.org/DirectAssure/api/POPracticeLocation/Intake?batchid={}&eof={} |
 
 # Rostering
 

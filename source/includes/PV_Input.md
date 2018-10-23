@@ -305,25 +305,3 @@ if (response.getStatusLine().getStatusCode() == 200)
 }
 
 ```
-
-# Schemas
-
-<h2 id="tocSpdfresponse">PdfResponse</h2>
-
-<a id="schemapdfresponse"></a>
-
-```json
-{
-  "content": "string"
-}
-
-```
-
-*Successful response to Proview Document API*
-
-### Properties
-
-|Name|Type|Required|Description|
-|---|--|--|-----|
-|content|string|false|none|
-
