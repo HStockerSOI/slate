@@ -1214,7 +1214,9 @@ import java.util.ArrayList;
 String url = "https://proview-demo.caqh.org/DirectAssure/api/directassureextractapi/api/v5/entities?";
 
 List<NameValuePair> params = new ArrayList<NameValuePair>();
-params.add(new BasicNameValuePair("organizationId", "string"));params.add(new BasicNameValuePair("fromDate", "mm/dd/yyyy"));params.add(new BasicNameValuePair("toDate", "mm/dd/yyyy"));
+params.add(new BasicNameValuePair("organizationId", "string"));
+params.add(new BasicNameValuePair("fromDate", "mm/dd/yyyy"));
+params.add(new BasicNameValuePair("toDate", "mm/dd/yyyy"));
 url += URLEncodedUtils.format(params, "UTF-8");
 
 //setup HTTP Auth
