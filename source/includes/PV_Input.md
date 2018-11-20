@@ -135,7 +135,8 @@ headers = {
 
 params = {
   "organizationID": 'string',
-  "docType": 'string'
+  "docType": 'string',
+  "caqhProviderID": 'string'
 }
 
 username = "yourUsername"

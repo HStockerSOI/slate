@@ -6,8 +6,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - java: Java
   - csharp: C#
 includes:
-  - swagger_status_get
-  - swagger_roster_post
+  - Rostering
   - PV_Title
   - PV_Input
   - DA_Title
@@ -447,6 +446,25 @@ Each of these methods can be used to invoke a different functionality on the sam
 
 <aside> REST is <code>stateless</code> meaning that <b>nothing</b> is maintained from call to call.  The relevant data and authorization must be explicitly input into every call.</aside>
 
+#DA Input Converter Tool
+
+> \>__python__ \_\_main\_\_.py --__poid__ 1234 --__filepath__ c:/CAQH/input.csv
+
+ CAQH provides a handy converter tool to allow you to convert a `|` (pipe) separated text file into the proper format for submission to the Direct Assure Input API.
+To run this program from the command line, navigate to the containing folder and then run the command on the right or specify the exact path to the program from the working directory.  The format of the input file should contain a header row containing one or many of the fields from the DA Input Schema.
+
+> __Example header:__ organization_id | tax_id | practice_name
+
+ <aside>
+You will need to have a python interpreter installed to use this piece of software.
+</aside>
+
+| Name | Parameter | Description |
+| -- | -- | -- |
+| Organization ID | --poid | POID is the Organization ID assigned to the participating organization by CAQH. |
+| File path | --filepath | Filepath of delimited file to be parsed.  This file will be converted into the json export file. |
+| Output | --output | The filepath of the json output file.  If none is supplied, it will output to "DA_Export.json" in the root directory of the converter files. |
+
 # Proview and DirectAssure
 
 Some of the calls you will make to the APIs will take in a `product` parameter; specifically the Rostering endpoints.  This product can be either ProView or DirectAssure. Be sure to know which product line you are using and input the proper value into the product parameter. 
@@ -461,28 +479,6 @@ The base URL will always be `https://proview.caqh.org`.
 # Generating a Batch ID
 
 Sometimes, an endpoint will require you to create your own unique `batch id` for your request, instead of returning one to you. The format of these batch ids differ from ones returned by the system, the format is POID_YYYYMMDD_HHMMSS  (POID is the 3 digit organization ID assigned to the participating organization by CAQH). You should fill the POID field out with your id, then append a date stamp and time stamp. Make sure to use the same generated batch id across your request if you need it multiple times (there are some requests that let you break up files you send into multiple calls). 
-
-#Python Converter Tool
-
-> \> __python__ \_\_main\_\_.py --__poid__ 1234 --__username__ Username --__password__ Password --__filepath__ c:/CAQH
-
-CAQH provides a handy converter tool to allow you to convert a `|` separated excel file into the proper format for submission or simply submit your already formatted JSON object via the command line.
-
-Your JSON Practice Location object should be in a `.json` file somewhere accessible in your file system.  To run this program from the command line, navigate to the containing folder and then run the command on the right or specify the exact path to the program from the working directory.
-
-<aside>
-You will need to have a python interpreter installed to use this piece of software.
-</aside>
-
-| Name | Parameter | Description |
-| -- | -- | -- |
-| Organization ID | --poid | POID is the Organization ID assigned to the participating organization by CAQH. |
-| Username | --username | Username associated with the Organization ID for DirectAssure login. Required for POST. |
-| Password | --password | Password associated with the Organization ID for DirectAssure login. Required for POST. |
-| File path | --filepath | Filepath of '|' delimited file to parse and call the DirectAssure API with. This or jsonFilepath is required for POST. |
-| JSON file path | --jsonfilepath | Filepath of json file to call the DirectAssure API with (unmodified).  This or filepath is required for POST. |
-| Make JSON file path | --makeJsonFilepath | Filepath to dump the POST json content to. If makeJsonFilepath is specified, no POST to DirectAssure occurs. Use this to optionally inspect the processed file as json before submission. Do not provide poid, username, and password when using this functionality. |
-| Request endpoint | --requestEndpoint | POST URL for DirectAssure record submission. Default is https://directassure.caqh.org/DirectAssure/api/POPracticeLocation/Intake?batchid={}&eof={} |
 
 # Rostering
 

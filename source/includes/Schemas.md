@@ -1,7 +1,7 @@
 # Schemas
 
 
-<h2 id="tocSprovider">Provider</h2>
+<h2 id="tocSrosterprovider">Rostering Provider</h2>
 
 <a id="schemaprovider"></a>
 
@@ -66,7 +66,7 @@
 |license_state|string|false|The two-Character ANSI state code that corresponds to the provider’s license state This field is required if Provider License Number is populated.|
 |license_number|integer(int32)|false|This field denotes the provider’s State License Number. The field is required if Provider License State is populated.|
 
-<h2 id="tocSproviderrequest">ProviderRequest</h2>
+<h2 id="tocSproviderrequest">Provider Request</h2>
 
 <a id="schemaproviderrequest"></a>
 
@@ -136,7 +136,7 @@
 |anniversary_date|string|false|none|
 |exception_description|string|false|none|
 
-<h2 id="tocSrosterresponse">RosterResponse</h2>
+<h2 id="tocSrosterresponse">Roster Response</h2>
 
 <a id="schemarosterresponse"></a>
 
@@ -155,7 +155,7 @@
 |---|--|--|-----|
 |batch_Id|string|false|none|
 
-<h2 id="tocSrostererrorreponse">RosterErrorReponse</h2>
+<h2 id="tocSrostererrorreponse">Roster Error Response</h2>
 
 <a id="schemarostererrorreponse"></a>
 
@@ -174,7 +174,7 @@
 |---|--|--|-----|
 |Message|string|false|none|
 
-<h2 id="tocSresultresponse">ResultResponse</h2>
+<h2 id="tocSresultresponse">Result Response</h2>
 
 <a id="schemaresultresponse"></a>
 
@@ -197,7 +197,7 @@
 |batch_time|string|false|none|
 |roster_result|[AddRequest](#schemaaddrequest)|false|none|
 
-<h2 id="tocSrosterupdate">RosterUpdate</h2>
+<h2 id="tocSrosterupdate">Roster Update</h2>
 
 <a id="schemarosterupdate"></a>
 
@@ -230,7 +230,7 @@
 |application_type|string|false|none|
 |affiliation_flag|string|false|none|
 
-<h2 id="tocSrosterupdaterequest">RosterUpdateRequest</h2>
+<h2 id="tocSrosterupdaterequest">Roster Update Request</h2>
 
 <a id="schemarosterupdaterequest"></a>
 
@@ -256,7 +256,7 @@
 |---|--|--|-----|
 |*anonymous*|[[RosterUpdate](#schemarosterupdate)]|false|none|
 
-<h2 id="tocSrosterdelete">RosterDelete</h2>
+<h2 id="tocSrosterdelete">Roster Delete</h2>
 
 <a id="schemarosterdelete"></a>
 
@@ -277,7 +277,7 @@
 |organization_id|string|false|none|
 |caqh_provider_id|string|false|none|
 
-<h2 id="tocSrosterdeleterequest">RosterDeleteRequest</h2>
+<h2 id="tocSrosterdeleterequest">Roster Delete Request</h2>
 
 <a id="schemarosterdeleterequest"></a>
 
@@ -416,7 +416,7 @@
 |provider_license|[array]|false|none|
 |provider_practice_specialty|[[Specialty](#schemaspecialty)]|false|none|
 
-<h2 id="tocSsuccessresponse">SuccessResponse</h2>
+<h2 id="tocSsuccessresponse">Success Response</h2>
 
 <a id="schemasuccessresponse"></a>
 
@@ -433,7 +433,7 @@
 |---|--|--|-----|
 |message|string|false|none|
 
-<h2 id="tocSerrorresponse">ErrorResponse</h2>
+<h2 id="tocSerrorresponse">Error Response</h2>
 
 <a id="schemaerrorresponse"></a>
 
@@ -450,7 +450,7 @@
 |---|--|--|-----|
 |error|string|false|none|
 
-<h2 id="tocSextractapi">ExtractApi</h2>
+<h2 id="tocSextractapi">Extract Api</h2>
 
 <a id="schemaextractapi"></a>
 
@@ -1161,7 +1161,7 @@
 |zip_code|string|false|none|
 |voluntary_medicare_opt_out_flag|boolean|false|none|
 
-<h2 id="tocSpractice_location">Practice_Location</h2>
+<h2 id="tocSpractice_location">Practice Location</h2>
 
 <a id="schemapractice_location"></a>
 
@@ -1236,7 +1236,7 @@
 |location_type|string|false|none|
 |providers|[[Provider](#schemaprovider)]|false|none|
 
-<h2 id="tocSpractice_location_request">Practice_Location_Request</h2>
+<h2 id="tocSpractice_location_request">Practice Location Request</h2>
 
 <a id="schemapractice_location_request"></a>
 
@@ -1305,7 +1305,7 @@
 |organization_id|string|false|none|
 |practice_location|[[Practice_Location](#schemapractice_location)]|false|none|
 
-<h2 id="tocSpdfresponse">PdfResponse</h2>
+<h2 id="tocSpdfresponse">Pdf Response</h2>
 
 <a id="schemapdfresponse"></a>
 
